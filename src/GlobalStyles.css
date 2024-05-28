@@ -82,7 +82,10 @@ body {
   align-items: center;
   justify-content: center;
 }
-
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
 .flex-align-end {
   display: flex;
   align-items: flex-end;
@@ -90,7 +93,8 @@ body {
 
 .flex-space-between {
   display: flex;
-  margin-right:1rem ;
+  /* margin-right: 1rem; */
+  gap: 1rem;
   justify-content: space-between;
 }
 
@@ -210,13 +214,40 @@ a {
 /* .ant-btn {
   font-weight: 500;
 } */
-
+.rounded-sm{
+  border-radius: .1rem;
+}
+.rounded-md{
+  border-radius: .5rem;
+}
+.rounded-lg{
+  border-radius: 1rem;
+}
 .ant-descriptions .ant-descriptions-row > th {
   padding-bottom: 0;
 }
 
 .ant-menu-item.ant-menu-item-selected {
-  background-color: #E0F0F2;
+  background-color: #e0f0f2;
+}
+
+/* placeholdr antd select */
+.custom-select .ant-select-selection-placeholder {
+  color: #8792A2 !important;
+}
+
+/* Ensure the border is styled correctly for different states */
+.custom-select .ant-select-selector {
+  border-color: #8792A2 !important;
+}
+
+/* placeholdr  antd datepicker*/
+.custom-select .ant-picker-input-placeholder {
+  color: black !important;
+}
+
+.custom-select .ant-picker {
+  border-color: black !important;
 }
 
 /* -------------------------------------------- */

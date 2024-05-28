@@ -12,10 +12,9 @@ const MainHeader = () => {
   return (
     <div
       className="main-header-container"
-      style={{ height: "78px", borderBottom: "2px solid #C1C9D2" }}
+      style={{ height: "75px", borderBottom: "2px solid #C1C9D2" }}
     >
       <div className="flex">
-       
         <NavBar />
       </div>
       <div className="header-right-sec">
@@ -27,7 +26,7 @@ const MainHeader = () => {
         </div>
         {/* <LogoMenu /> */}
         <div className="profile-settings">
-          <MenuIcon/> |<strong>PA</strong> 
+          <MenuIcon /> |<strong>PA</strong>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { red } from "@mui/material/colors";
 // import "./index.css";
 function NavBar() {
-  const [selectedKey, setSelectedKey] = useState("1");
+  const [selectedKey, setSelectedKey] = useState("3");
   //   const navigate = useNavigate();
   //   const onChange = (key) => {
   //     console.log(key);
@@ -37,7 +37,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -55,7 +55,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -73,7 +73,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -91,7 +91,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -109,7 +109,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -127,7 +127,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -145,7 +145,7 @@ function NavBar() {
         <div
           style={{
             textAlign: "center",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#139696",
             paddingRight: "1.4rem",
             borderRight: "2px solid #C1C9D2",
@@ -166,6 +166,7 @@ function NavBar() {
         // defaultActiveKey="3"
         items={items}
         size="small"
+        // style={{borderBottom:'none'}}
         // onChange={onChange}
       />
     </>
