@@ -1,9 +1,13 @@
 import React from "react";
-import ClaimsList from "./Containers/ClaimsList";
+import { Route, Routes } from "react-router-dom";
+// import ClaimsList from "./Containers/ClaimsList";
 import "./GlobalStyles.css";
-import './index.css'
+import "./index.css";
 import { ConfigProvider } from "antd";
-
+import PrivateRoute from "./Routes/PrivateRoute";
+// import LoginForm from "./Containers/Login";
+const Login = React.lazy(() => import("./Containers/Login"));
+const ClaimsList = React.lazy(() => import("./Containers/ClaimsList"));
 function App() {
   return (
     <ConfigProvider
@@ -20,6 +24,13 @@ function App() {
       }}
     >
       <div className="app__mainContainer">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/claimslist" element={<PrivateRoute />}>
+            <Route path="" element={<ClaimsList />} />
+          </Route>
+        </Routes>
         {/* <Toaster position="top-right" reverseOrder={false} /> */}
 
         {/* <Route
@@ -27,7 +38,8 @@ function App() {
           name="login"
           render={(props) => <Login {...props} />}
         /> */}
-        <ClaimsList />
+        {/* <ClaimsList /> */}
+    
       </div>
     </ConfigProvider>
   );

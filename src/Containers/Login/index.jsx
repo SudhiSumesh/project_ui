@@ -1,219 +1,418 @@
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
 
-// // import React, { useEffect, useState } from "react";
-// import { useForm } from "Hooks/validator";
+import { IconButton, TextField } from "@mui/material";
+import { Button, Typography } from "antd";
+import EditIcon from "@mui/icons-material/Edit";
+import trilliumHealthLogo from "../../assets/images/trillium-health-logo.png";
+import clinicLoginCover1x from "../../assets/images/clinic-login-cover1x.png";
+import clinicLoginCover1_5x from "../../assets/images/clinic-login-cover1_5x.png";
+import clinicLoginCover2x from "../../assets/images/clinic-login-cover2x.png";
+import validationSchema from "../../Helpers/ValidationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { clickLogin, getuserData } from "../../Redux/Login/login.actions";
+import { LoginResponse, apiStatus } from "../../Redux/Login/login.reducer";
+import { loginInfo } from "../../Redux/PriorAuth/PriorAuthApis/prior.actions";
+import "./style.css";
+import { useNavigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
+const LoginForm = () => {
+  const navigate = useNavigate();
+  const [status, setstatus] = useState("default");
+  const { userdata, loginResponse, Status } = useSelector(
+    (state) => state.login
+  );
+  const { cache } = useSelector((state) => state.prior);
+  const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      clinic_name: "",
+      clinicId: 93422,
+      userName: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      // Add a console log to verify submission
+      //   console.log("Form submitted", values);
+      //   let a = { name: values.clinic_name, id: values.clinicId };
+      //   localStorage.setItem("clinic_data", JSON.stringify(a));
+      //   localStorage.setItem("clinic_id", values.clinicId);
+      dispatch(
+        clickLogin({
+          clinicId: values.clinicId,
+          userName: values.userName,
+          password: values.password,
+        })
+      );
+      dispatch(apiStatus(true));
+    },
+  });
 
-// import PropTypes from "prop-types";
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import Typography from "@material-ui/core/Typography";
-// import IconButton from "@material-ui/core/IconButton";
-// import CreateRoundedIcon from "@material-ui/icons/CreateRounded";
-// import trilliumHealthLogo from "../../assets/images/trillium-health-logo.png";
-// // import trilliumHealthLogo2 from '../../assets/images/trillium-health-logo-3.png'
-// import clinicLoginCover1x from "../../assets/images/clinic-login-cover1x.png";
-// import clinicLoginCover1_5x from "../../assets/images/clinic-login-cover1_5x.png";
-// import clinicLoginCover2x from "../../assets/images/clinic-login-cover2x.png";
+  const newlogin = () => {
+    formik.resetForm();
+    setstatus("not");
+  };
+  //login response
+  useEffect(() => {
+    if (loginResponse && loginResponse.data) {
+      const { data } = loginResponse;
+      let responseCode = loginResponse.responseCode;
+      if (data && responseCode === 0) {
+        console.log("inside");
+        localStorage.setItem("access_token", data.accessToken);
 
-// import "./style.css";
+        const roles = data?.roles;
+        const isAdmin = roles.some((role) => role.roleId === 2);
+        localStorage.setItem("isAdministratorAccess", isAdmin);
 
-// const LoginForm = () => {
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("roleId", data.roles[0].roleId);
+        localStorage.setItem("role", data.roles[0]);
+        dispatch(getuserData({ id: data.userId }));
+        dispatch(LoginResponse(null));
+        dispatch(loginInfo());
+      }
+      if (responseCode === 117) {
+        setloginError("Login failed. Please enter valid credentials");
+      }
+      if (responseCode === 159) {
+        setloginError(
+          "We are working to ensure your account is activated. Due to demand, this is taking longer than we anticipated. We will reach out to you as soon as possible to verify your information and activate the account. Thank you for your patience"
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginResponse, history]);
 
+  useEffect(() => {
+    if (Status === true) {
+      if (userdata && userdata.data) {
+        console.log("inside userdata");
+        const { data } = userdata;
+        console.log(data, "usedata");
+        console.log(data.memoryCash.userList, "memmoryCash 155");
+        // let userx = data.memoryCash.userList ? data.memoryCash.userList : []
+        let userx = [...(data.memoryCash.userList || [])];
 
-//   return (
-//     <div className="clinicLogin">
-//       <header className="clinicLogin__header">
-//         <div className="clinicLogin__header__bar">
-//           <a href="#0">
-//             <img
-//               src={trilliumHealthLogo}
-//               alt="trillium-health-logo"
-//               className="clinicLogin__header__logo"
-//             />
-//           </a>
+        userx.push({
+          userId: 0,
+          roleId: 101,
+          roleName: "INTERNAL_SUPPORT",
+          firstName: "Internal",
+          middleName: "",
+          lastName: "Support",
+          fullName: "Internal Support",
+          clinicId: 0,
+          clinicName: "",
+        });
+        console.log(userx, "userx 167");
+        let memoryCash = {
+          appointmentType: data.memoryCash.appointmentType
+            ? data.memoryCash.appointmentType
+            : [],
+          locations: data.memoryCash.locations ? data.memoryCash.locations : [],
+          permissionEntity: data.memoryCash.permissionEntity
+            ? data.memoryCash.permissionEntity
+            : [],
+          provider: data.memoryCash.provider ? data.memoryCash.provider : [],
+          userList: userx,
+          posList: data.memoryCash.posList,
+          tosList: data.memoryCash.tosList,
+        };
+        console.log(memoryCash.locations, "memmorycash location 184");
+        localStorage.setItem("memoryCash", JSON.stringify(memoryCash));
+        localStorage.setItem("user_data", JSON.stringify(data.loginInfo));
+        // dispatch(loginInfo())
+        // window.location.href = '/dashboard'
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userdata]);
 
-//           <ul>
-//             <li>
-//               <a href="#0">About</a>
-//             </li>
-//             <li>
-//               <a href="#0">Contact us</a>
-//             </li>
-//           </ul>
-//         </div>
-//       </header>
+  useEffect(() => {
+    if (cache?.data) {
+      let Response = cache.data;
+      console.log("Inside cache");
+      console.log(Response, "cache response");
+      localStorage.setItem("cache", JSON.stringify(Response));
+      //   window.location.href = "/dashboard";
+      navigate("/claimslist");
+    }
+  }, [cache]);
+  return (
+    <div className="clinicLogin">
+      <header className="clinicLogin__header">
+        <div className="clinicLogin__header__bar">
+          <a href="#0">
+            <img
+              src={trilliumHealthLogo}
+              alt="trillium-health-logo"
+              className="clinicLogin__header__logo"
+            />
+          </a>
 
-//       <main className="clinicLogin__main">
-//         <section className="clinicLogin__section">
-//           <div className="clinicLogin__grid">
-//             <div className="clinicLogin__grid__col">
-//               <h1 className="clinicLogin__grid__heading">
-//                 The All-In-One Application for Physicians.
-//               </h1>
-//               <h2 className="clinicLogin__grid__subheading">
-//                 Schedule appointments, virtually visit and securely chat with
-//                 your patients - All in a single platform.
-//               </h2>
-//               <div className="clinicLogin__heroWrapper">
-//                 <img
-//                   alt="logincoverpicture"
-//                   src={clinicLoginCover1x}
-//                   srcSet={`${clinicLoginCover1x} 300w, ${clinicLoginCover1_5x} 768w, ${clinicLoginCover2x} 1280w, ${clinicLoginCover2x} 3200w`}
-//                   className="clinicLogin__heroImg"
-//                 />
-//               </div>
-//             </div>
+          <ul>
+            <li>
+              <a href="#0">About</a>
+            </li>
+            <li>
+              <a href="#0">Contact us</a>
+            </li>
+          </ul>
+        </div>
+      </header>
 
-//             <div className="clinicLogin__grid__col clinicLogin__grid__col--form">
-//               <form onSubmit={handleSubmit} className="clinicLogin__form">
-//                 <div
-//                   hidden={status === "default" ? true : false}
-//                   className="clinicLogin__editableInputField"
-//                 >
-//                   <TextField
-//                     margin="normal"
-//                     autoFocus
-//                     type="text"
-//                     label="Clinic Name"
-//                     variant="outlined"
-//                     className="clinicLogin__inputField"
-//                     {...useInput("clinic_name", {
-//                       // isLength: {
-//                       //   value: { max: 60 },
-//                       //   message: 'Maximum length is 60',
-//                       // },
-//                       // matches: {
-//                       //   value: /^[a-zA-Z0-9-']+$/,
-//                       //   message: 'Maximum length is 15',
-//                       // },
-//                     })}
-//                   />
-//                   <div className="clinicLogin__editBtn--wrapper">
-//                     <IconButton onClick={newlogin}>
-//                       <CreateRoundedIcon />
-//                     </IconButton>
-//                   </div>
-//                 </div>
+      <main className="clinicLogin__main">
+        <section className="clinicLogin__section">
+          <div className="clinicLogin__grid">
+            <div className="clinicLogin__grid__col">
+              <h1 className="clinicLogin__grid__heading">
+                The All-In-One Application for Physicians.
+              </h1>
+              <h2 className="clinicLogin__grid__subheading">
+                Schedule appointments, virtually visit and securely chat with
+                your patients - All in a single platform.
+              </h2>
+              <div className="clinicLogin__heroWrapper">
+                <img
+                  alt="logincoverpicture"
+                  src={clinicLoginCover1x}
+                  srcSet={`${clinicLoginCover1x} 300w, ${clinicLoginCover1_5x} 768w, ${clinicLoginCover2x} 1280w, ${clinicLoginCover2x} 3200w`}
+                  className="clinicLogin__heroImg"
+                />
+              </div>
+            </div>
 
-//                 {/* * default state * */}
-//                 <div hidden={status === "default" ? false : true}>
-//                   <div className="clinicLogin__editableInputField">
-//                     <TextField
-//                       margin="normal"
-//                       autoFocus
-//                       type="text"
-//                       label="Clinic Name"
-//                       variant="outlined"
-//                       className="clinicLogin__inputField "
-//                       {...useInput("clinic_name", {
-//                         isLength: {
-//                           value: { max: 100 },
-//                           message: "Maximum length is 100",
-//                         },
-//                         // matches: {
-//                         //   value: /^[a-zA-Z0-9- ']+$/,
-//                         //   message: 'Maximum length is 15',
-//                         // },
-//                       })}
-//                     />
-//                   </div>
-//                   <TextField
-//                     margin="normal"
-//                     required
-//                     variant="outlined"
-//                     type="number"
-//                     label="Clinic ID"
-//                     className="clinicLogin__inputField"
-//                     {...useInput("clinicId", {
-//                       isRequired: {
-//                         value: true,
-//                         message: "Enter a valid Clinic ID",
-//                       },
-//                     })}
-//                   />
-//                 </div>
+            <div className="clinicLogin__grid__col clinicLogin__grid__col--form">
+              <form
+                className="clinicLogin__form"
+                onSubmit={formik.handleSubmit}
+              >
+                <div
+                  hidden={status === "default" ? false : true}
+                  className="clinicLogin__editableInputField"
+                >
+                  <TextField
+                    margin="normal"
+                    autoFocus
+                    type="text"
+                    label="Clinic Name"
+                    variant="outlined"
+                    className="clinicLogin__inputField"
+                    name="clinic_name"
+                    value={formik.values.clinic_name}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.clinic_name &&
+                      Boolean(formik.errors.clinic_name)
+                    }
+                    helperText={
+                      formik.touched.clinic_name && formik.errors.clinic_name
+                    }
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#139696",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#139696",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: "#139696",
+                        },
+                      },
+                    }}
+                  />
 
-//                 <TextField
-//                   margin="normal"
-//                   required
-//                   autoComplete="email"
-//                   label="Username"
-//                   error={loginError}
-//                   type="text"
-//                   variant="outlined"
-//                   className="clinicLogin__inputField"
-//                   {...useInput("userName", {
-//                     isRequired: {
-//                       value: true,
-//                       message: "Enter a valid Username",
-//                     },
-//                   })}
-//                 />
+                  <div className="clinicLogin__editBtn--wrapper">
+                    <IconButton onClick={newlogin}>
+                      <EditIcon />
+                    </IconButton>
+                  </div>
+                </div>
 
-//                 <TextField
-//                   margin="normal"
-//                   required
-//                   type="password"
-//                   error={loginError ? true : false}
-//                   helperText={loginError}
-//                   label="Password"
-//                   variant="outlined"
-//                   className="clinicLogin__inputField"
-//                   {...useInput("password", {
-//                     isRequired: {
-//                       value: true,
-//                       message: "Enter a valid Password",
-//                     },
-//                   })}
-//                   autoComplete="current-password"
-//                 />
+                <div hidden={status === "default" ? true : false}>
+                  <div className="clinicLogin__editableInputField">
+                    <TextField
+                      margin="normal"
+                      autoFocus
+                      type="text"
+                      label="Clinic Name"
+                      variant="outlined"
+                      className="clinicLogin__inputField"
+                      name="clinic_name"
+                      value={formik.values.clinic_name}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.clinic_name &&
+                        Boolean(formik.errors.clinic_name)
+                      }
+                      helperText={
+                        formik.touched.clinic_name && formik.errors.clinic_name
+                      }
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#139696",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#139696",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          "&.Mui-focused": {
+                            color: "#139696",
+                          },
+                        },
+                      }}
+                    />
+                  </div>
+                  <TextField
+                    margin="normal"
+                    required
+                    variant="outlined"
+                    type="number"
+                    label="Clinic ID"
+                    className="clinicLogin__inputField"
+                    name="clinicId"
+                    value={formik.values.clinicId}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.clinicId && Boolean(formik.errors.clinicId)
+                    }
+                    helperText={
+                      formik.touched.clinicId && formik.errors.clinicId
+                    }
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#139696",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#139696",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: "#139696",
+                        },
+                      },
+                    }}
+                  />
+                </div>
 
-//                 <Button
-//                   type="submit"
-//                   variant="contained"
-//                   color="primary"
-//                   className="clinicLogin__submitBtn"
-//                 >
-//                   Login
-//                 </Button>
-//               </form>
-//             </div>
-//           </div>
-//         </section>
-//       </main>
-//       <div className="clinicLogin__copyright">
-//         <Typography
-//           variant="caption"
-//           align="center"
-//           color="textSecondary"
-//           display="block"
-//         >
-//           Copyright &copy; {new Date().getFullYear()}-
-//           {new Date().getFullYear() + 1} trillium.health
-//         </Typography>
-//       </div>
-//     </div>
-//   );
-// };
+                <TextField
+                  margin="normal"
+                  required
+                  autoComplete="email"
+                  label="Username"
+                  type="text"
+                  variant="outlined"
+                  className="clinicLogin__inputField"
+                  name="userName"
+                  value={formik.values.userName}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.userName && Boolean(formik.errors.userName)
+                  }
+                  helperText={formik.touched.userName && formik.errors.userName}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#139696",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#139696",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      "&.Mui-focused": {
+                        color: "#139696",
+                      },
+                    },
+                  }}
+                />
 
-// const mapStateToProps = (state) => ({
-//   LoginData: state.login,
-//   priorAuthData: state.priorAuth,
-// });
+                <TextField
+                  margin="normal"
+                  required
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  className="clinicLogin__inputField"
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.password && Boolean(formik.errors.password)
+                  }
+                  helperText={formik.touched.password && formik.errors.password}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#139696",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#139696",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      "&.Mui-focused": {
+                        color: "#139696",
+                      },
+                    },
+                  }}
+                  autoComplete="current-password"
+                />
 
-// const mapDispatchToProps = (dispatch) => ({
-//   submitLogin: (values) => dispatch(clickLogin(values)),
-//   apiStatus: (values) => dispatch(apiStatus(values)),
-//   getuserData: (values) => dispatch(getuserData(values)),
-//   loginResponse: (values) => dispatch(loginResponse(values)),
-//   loginInfo: (values) => dispatch(loginInfo(values)),
-// });
-// LoginForm.propTypes = {
-//   submitLogin: PropTypes.func,
-//   apiStatus: PropTypes.func,
-//   LoginData: PropTypes.object,
-//   getuserData: PropTypes.func,
-//   loginResponse: PropTypes.func,
-//   loginInfo: PropTypes.func,
-// };
-// export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className="clinicLogin__submitBtn"
+                  onClick={formik.handleSubmit}
+                >
+                  Login
+                </Button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+      <div className="clinicLogin__copyright">
+        <Typography
+          variant="caption"
+          align="center"
+          color="textSecondary"
+          display="block"
+        >
+          Copyright &copy; {new Date().getFullYear()}-
+          {new Date().getFullYear() + 1} trillium.health
+        </Typography>
+      </div>
+      <Toaster position="top-right" reverseOrder={false} />
+    </div>
+  );
+};
+
+export default LoginForm;

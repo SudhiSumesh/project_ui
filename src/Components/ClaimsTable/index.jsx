@@ -2,182 +2,62 @@ import React, { useState } from "react";
 import { ConfigProvider, Table } from "antd";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import "./style.css";
 const columns = [
   {
     title: "Last Name",
     dataIndex: "lastName",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "First Name",
     dataIndex: "FirstName",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "MRN",
     dataIndex: "MRN",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "DOS",
     dataIndex: "DOS",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Phone No",
     dataIndex: "PhoneNo",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Provider",
     dataIndex: "Provider",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Facility",
     dataIndex: "Facility",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Insurance",
     dataIndex: "Insurance",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Claim Status",
     dataIndex: "ClaimsStatus",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Ins Bal",
     dataIndex: "insBal",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
-    title: "PAt Bal",
+    title: "Pat Bal",
     dataIndex: "PatBal",
-    render: (text) => (
-      <span
-        style={{
-          color: "#1A1F36",
-          fontWeight: "500",
-          fontSize: "14px",
-          lineHeight: "16.94px",
-        }}
-      >
-        {text}
-      </span>
-    ),
+    render: (text) => <span className="table-item">{text}</span>,
   },
   {
     title: "Action",
@@ -188,7 +68,7 @@ const columns = [
         }}
       >
         <EditIcon fontSize="small" />
-        <DeleteIcon fontSize="small"/>
+        <DeleteIcon fontSize="small" />
       </span>
     ),
   },
@@ -308,6 +188,7 @@ const ClaimsTable = () => {
         }}
       >
         <Table
+          className="custom-scrollbar"
           rowSelection={{
             type: selectionType,
             ...rowSelection,
@@ -315,9 +196,9 @@ const ClaimsTable = () => {
           columns={columns}
           dataSource={data}
           size="small"
-          // scroll={{
-          //   y: 240,
-          // }}
+          scroll={{
+            y: 240,
+          }}
           pagination={false} // Disable pagination
         ></Table>
       </ConfigProvider>

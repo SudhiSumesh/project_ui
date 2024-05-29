@@ -9,7 +9,7 @@ import PaidIcon from "@mui/icons-material/Paid";
 import ArticleIcon from "@mui/icons-material/Article";
 import { useNavigate } from "react-router-dom";
 import { red } from "@mui/material/colors";
-// import "./index.css";
+import "./index.css";
 function NavBar() {
   const [selectedKey, setSelectedKey] = useState("3");
   //   const navigate = useNavigate();
@@ -34,15 +34,7 @@ function NavBar() {
     {
       key: "1",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <CalendarMonthIcon fontSize="large" />
           <div>Calender</div>
         </div>
@@ -52,15 +44,7 @@ function NavBar() {
     {
       key: "2",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <AccountBoxIcon fontSize="large" />
           <div>Accounts</div>
         </div>
@@ -70,15 +54,7 @@ function NavBar() {
     {
       key: "3",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <PaidIcon fontSize="large" />
           <div>Claims</div>
         </div>
@@ -88,15 +64,7 @@ function NavBar() {
     {
       key: "4",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <PaymentsIcon fontSize="large" />
           <div>Payments</div>
         </div>
@@ -106,15 +74,7 @@ function NavBar() {
     {
       key: "5",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <ForumIcon fontSize="large" />
           <div>Messages</div>
         </div>
@@ -124,15 +84,7 @@ function NavBar() {
     {
       key: "6",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <AssessmentIcon fontSize="large" />
           <div>Rounding</div>
         </div>
@@ -142,15 +94,7 @@ function NavBar() {
     {
       key: "7",
       label: (
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "12px",
-            color: "#139696",
-            paddingRight: "1.4rem",
-            borderRight: "2px solid #C1C9D2",
-          }}
-        >
+        <div className="tab-item">
           <ArticleIcon fontSize="large" />
           <div>Reports</div>
         </div>
@@ -161,7 +105,7 @@ function NavBar() {
   return (
     <>
       <Tabs
-        className=" subheading"
+        className=" custom-tabs"
         activeKey={selectedKey}
         // defaultActiveKey="3"
         items={items}

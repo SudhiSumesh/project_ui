@@ -12,7 +12,7 @@ const MainHeader = () => {
   return (
     <div
       className="main-header-container"
-      style={{ height: "75px", borderBottom: "2px solid #C1C9D2" }}
+      style={{ height: "75px", borderBottom: "1px solid #C1C9D2" }}
     >
       <div className="flex">
         <NavBar />

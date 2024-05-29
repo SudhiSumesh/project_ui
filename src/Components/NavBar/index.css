@@ -51,3 +51,16 @@
 }
 
 
+.custom-tabs .ant-tabs-nav::before {
+  border-bottom: none !important;
+}
+
+.tab-item {
+  text-align: center;
+  font-size: 12px;
+  color: #139696;
+  padding-right: 1.4rem;
+  border-right: 2px solid #C1C9D2;
+
+  
+}
