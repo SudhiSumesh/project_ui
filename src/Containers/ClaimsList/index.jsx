@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainHeader from "../../Components/MainHeader";
 import ClaimsTable from "../../Components/ClaimsTable";
 import {
@@ -9,6 +9,8 @@ import {
   Popover,
   Select,
   Dropdown,
+  Modal,
+  Descriptions,
 } from "antd";
 import PolylineIcon from "@mui/icons-material/Polyline";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -17,6 +19,17 @@ import "./style.css";
 
 function ClaimsList() {
   const { Search } = Input;
+  const [openAdd, setOpenAdd] = useState(false);
+
+
+    const handleOpenAdd = () => {
+      // setFields(defaultFields);
+      // setEdit(false);
+      setOpenAdd(true);
+    };
+  const closeAdd = () => {
+    setOpenAdd(false);
+  };
 
   const FilterPopover = (
     <div style={{ display: "flex", gap: "16px" }}>
@@ -138,6 +151,21 @@ function ClaimsList() {
 
   return (
     <div>
+      <Modal
+        title={"Add " }
+        open={openAdd}
+        onOk={()=>closeAdd()}
+        onCancel={() => closeAdd()}
+        width={800}
+      >
+        <div style={{ display: "flex", gap: "18px", paddingTop: "16px" }}>
+          <Descriptions
+            layout="vertical"
+            className="form_container"
+            // items={setItems()}
+          />
+        </div>
+      </Modal>
       <MainHeader />
       {/* Claims middle section start */}
       <div
@@ -189,6 +217,7 @@ function ClaimsList() {
             type="primary"
             shape="circle"
             size="medium"
+            onClick={() => handleOpenAdd()}
             icon={<AddIcon />}
           />
         </div>

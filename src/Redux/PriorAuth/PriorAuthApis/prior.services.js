@@ -3,8 +3,8 @@ import httpCommon from "../../http/http.common";
 import { objectToUrl } from '../../Utils/ajax-utils'
 
 class PriorService {
-  loginInfoApi(data) {
-    return httpCommon.get(`${Apis.Priorauth_loginInfoApi}`, data)
+  loginInfoApi() {
+    return httpCommon.get(`${Apis.Priorauth_loginInfoApi}`)
   }
   getPriorAuthApi(data) {
     return httpCommon.get(

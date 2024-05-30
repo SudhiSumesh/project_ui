@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import priorServices from "./prior.services";
-export const loginInfo = createAsyncThunk("prior/login_info", async (data) => {
+export const loginInfo = createAsyncThunk("prior/login_info", async () => {
   try {
-    const res = await priorServices.loginInfoApi(data);
-    console.log(res, "prior actions");
+    const res = await priorServices.loginInfoApi();
+    // console.log(res, "prior actions");
     return res.data;
   } catch (error) {
     console.log(error);

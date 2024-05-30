@@ -6,10 +6,11 @@
   justify-content: space-between;
   width: 100%;
   background-color: white;
+  overflow-x: hidden;
 }
 .header-right-sec {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   gap: 1rem;
   /* margin-right: 1rem; */
@@ -31,6 +32,7 @@
   font:bold ;
   display: flex;
   justify-content: center;
+  cursor: pointer;
   
 }
  .header-right-sec .profile-settings strong{

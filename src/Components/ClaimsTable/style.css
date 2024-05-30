@@ -4,6 +4,9 @@
   font-weight: 500;
   font-size: "14px";
   line-height: "16.94px";
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   
 }
 
@@ -58,4 +61,6 @@
 .ant-table-body::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-thumb-hover);
 }
+
+/* tool tip */
 

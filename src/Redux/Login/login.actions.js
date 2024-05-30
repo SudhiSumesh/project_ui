@@ -24,9 +24,8 @@ export const getuserData = createAsyncThunk(
   "user/getuserdata",
   async (data) => {
     try {
-      //   console.log(data.id, 'data id')
       const res = await loginServices.userData(data);
-      console.log(res.data, "login actions");
+
       return res.data;
     } catch (error) {
       console.log(error);

@@ -19,6 +19,7 @@ import { Toaster } from "react-hot-toast";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [loginError, setloginError] = useState("");
   const [status, setstatus] = useState("default");
   const { userdata, loginResponse, Status } = useSelector(
     (state) => state.login
@@ -34,11 +35,9 @@ const LoginForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      // Add a console log to verify submission
-      //   console.log("Form submitted", values);
-      //   let a = { name: values.clinic_name, id: values.clinicId };
-      //   localStorage.setItem("clinic_data", JSON.stringify(a));
-      //   localStorage.setItem("clinic_id", values.clinicId);
+        let a = { name: values.clinic_name, id: values.clinicId };
+        localStorage.setItem("clinic_data", JSON.stringify(a));
+        localStorage.setItem("clinic_id", values.clinicId);
       dispatch(
         clickLogin({
           clinicId: values.clinicId,
@@ -58,19 +57,19 @@ const LoginForm = () => {
   useEffect(() => {
     if (loginResponse && loginResponse.data) {
       const { data } = loginResponse;
-      let responseCode = loginResponse.responseCode;
+      let responseCode = loginResponse?.responseCode;
       if (data && responseCode === 0) {
-        console.log("inside");
-        localStorage.setItem("access_token", data.accessToken);
+        localStorage.setItem("access_token", data?.accessToken);
 
         const roles = data?.roles;
-        const isAdmin = roles.some((role) => role.roleId === 2);
+        const isAdmin = roles?.some((role) => role.roleId === 2);
+        // set details in to local storage
         localStorage.setItem("isAdministratorAccess", isAdmin);
-
         localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("roleId", data.roles[0].roleId);
         localStorage.setItem("role", data.roles[0]);
+        // api calls
         dispatch(getuserData({ id: data.userId }));
         dispatch(LoginResponse(null));
         dispatch(loginInfo());
@@ -84,16 +83,12 @@ const LoginForm = () => {
         );
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginResponse, history]);
+  }, [loginResponse]);
 
   useEffect(() => {
     if (Status === true) {
       if (userdata && userdata.data) {
-        console.log("inside userdata");
         const { data } = userdata;
-        console.log(data, "usedata");
-        console.log(data.memoryCash.userList, "memmoryCash 155");
         // let userx = data.memoryCash.userList ? data.memoryCash.userList : []
         let userx = [...(data.memoryCash.userList || [])];
 
@@ -108,7 +103,6 @@ const LoginForm = () => {
           clinicId: 0,
           clinicName: "",
         });
-        console.log(userx, "userx 167");
         let memoryCash = {
           appointmentType: data.memoryCash.appointmentType
             ? data.memoryCash.appointmentType
@@ -122,23 +116,16 @@ const LoginForm = () => {
           posList: data.memoryCash.posList,
           tosList: data.memoryCash.tosList,
         };
-        console.log(memoryCash.locations, "memmorycash location 184");
         localStorage.setItem("memoryCash", JSON.stringify(memoryCash));
         localStorage.setItem("user_data", JSON.stringify(data.loginInfo));
-        // dispatch(loginInfo())
-        // window.location.href = '/dashboard'
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userdata]);
 
   useEffect(() => {
     if (cache?.data) {
       let Response = cache.data;
-      console.log("Inside cache");
-      console.log(Response, "cache response");
       localStorage.setItem("cache", JSON.stringify(Response));
-      //   window.location.href = "/dashboard";
       navigate("/claimslist");
     }
   }, [cache]);

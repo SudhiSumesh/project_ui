@@ -1,25 +1,28 @@
-import environment from '../../environments/environment'
-import axios from 'axios'
-const token = localStorage.getItem('access_token') || null
-const Bearer = 'Bearer '
-const { baseUrl } = environment
+import axios from "axios";
+import environment from "../../environments/environment";
+
+const { baseUrl } = environment;
 
 const httpCommon = axios.create({
   baseURL: baseUrl,
   headers: {
-    Authorization: Bearer + token,
-    'application-id': 2,
-    'Content-Type': 'application/json', 
+    "application-id": 2,
+    "Content-Type": "application/json",
   },
-})
-// Interceptor to set Content-Type based on request method
-httpCommon.interceptors.request.use((config) => {
-  // if (config.method === 'post' || config.method === 'put'||config.method==='get' ) {
-  //   config.headers['Content-Type'] = 'application/json';
-  // }
-  if (config.method === 'get' && !config.headers['Content-Type']) {
-    config.headers['Content-Type'] = 'application/json'
+});
+
+// Add a request interceptor to include the token dynamically
+httpCommon.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config
-})
-export default httpCommon
+);
+
+export default httpCommon;
