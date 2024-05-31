@@ -6,7 +6,7 @@
   justify-content: space-between;
   width: 100%;
   background-color: white;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 .header-right-sec {
   display: flex;

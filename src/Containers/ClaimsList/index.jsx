@@ -21,12 +21,11 @@ function ClaimsList() {
   const { Search } = Input;
   const [openAdd, setOpenAdd] = useState(false);
 
-
-    const handleOpenAdd = () => {
-      // setFields(defaultFields);
-      // setEdit(false);
-      setOpenAdd(true);
-    };
+  const handleOpenAdd = () => {
+    // setFields(defaultFields);
+    // setEdit(false);
+    setOpenAdd(true);
+  };
   const closeAdd = () => {
     setOpenAdd(false);
   };
@@ -152,9 +151,9 @@ function ClaimsList() {
   return (
     <div>
       <Modal
-        title={"Add " }
+        title={"Add "}
         open={openAdd}
-        onOk={()=>closeAdd()}
+        onOk={() => closeAdd()}
         onCancel={() => closeAdd()}
         width={800}
       >
@@ -176,7 +175,14 @@ function ClaimsList() {
         }}
       >
         <div>
-          <Pagination size="small" total={50} showSizeChanger showQuickJumper />
+          <Pagination
+            size="small"
+            total={200}
+            defaultPageSize={50}
+            pageSizeOptions={[50, 100, 150, 200]}
+            showSizeChanger
+            showQuickJumper
+          />
         </div>
         <div className="flex-space-between flex">
           <div className="claim-status-open claim-status-box">

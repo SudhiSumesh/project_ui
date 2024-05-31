@@ -1,0 +1,8 @@
+.ant-layout-header{
+    background: none;
+}
+/* Custom styles for Ant Design Tabs */
+.custom-tabs .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+    border: none !important;
+  }
+  

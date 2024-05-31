@@ -8,6 +8,7 @@ import PrivateRoute from "./Routes/PrivateRoute";
 // import LoginForm from "./Containers/Login";
 const Login = React.lazy(() => import("./Containers/Login"));
 const ClaimsList = React.lazy(() => import("./Containers/ClaimsList"));
+const ClaimsDetail=React.lazy(()=>import('./Containers/ClaimsDetail'))
 function App() {
   return (
     <ConfigProvider
@@ -29,17 +30,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/claimslist" element={<PrivateRoute />}>
             <Route path="" element={<ClaimsList />} />
+            <Route path="claims-details" element={<ClaimsDetail />} />
           </Route>
         </Routes>
         {/* <Toaster position="top-right" reverseOrder={false} /> */}
-
+        
         {/* <Route
           path="/login"
           name="login"
           render={(props) => <Login {...props} />}
         /> */}
         {/* <ClaimsList /> */}
-    
       </div>
     </ConfigProvider>
   );
