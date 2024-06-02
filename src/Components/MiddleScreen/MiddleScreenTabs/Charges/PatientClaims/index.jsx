@@ -5,19 +5,6 @@ import "./style.css";
 function PatientClaims() {
   const [edit, setEdit] = useState(false);
   const [expand, setExpand] = useState(false);
-  const [values, setValues] = useState({
-    firstName: "Jenny",
-    middleName: "Ann",
-    lastName: "Andrews",
-    dob: "10/09/98",
-    age: "25",
-    gender: "Female",
-    addressLine: "123 Privet drive",
-    city: "Dallas",
-    state: "TX",
-    zip: "35678",
-    phone: "(205) 356 - 7677",
-  });
 
   const expandedItems = [
     { key: "1", value: "Jenny Andrews" }, // Full name

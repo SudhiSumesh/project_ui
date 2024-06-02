@@ -1,8 +1,12 @@
-.ant-layout-header{
-    background: none;
+.ant-layout-header {
+  background: none;
 }
 /* Custom styles for Ant Design Tabs */
 .custom-tabs .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
-    border: none !important;
-  }
-  
+  border: none !important;
+}
+.add-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}

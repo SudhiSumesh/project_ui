@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button, Layout, Menu, Dropdown, Space, Descriptions } from "antd";
+import { Button, Layout, Menu, Dropdown, Space } from "antd";
 import "./style.css";
 
 const { Sider } = Layout;
@@ -104,11 +98,12 @@ const SideBar = () => {
       collapsed={collapsed}
       style={{
         background: "white",
-        marginLeft: "25px",
+        marginLeft: "1.5rem",
         marginTop: "10px",
-        marginBottom: "60px",
-        display: "flex",
+        // marginBottom: "60px",
         minHeight: "100vh",
+        // paddingRight: ".9rem",
+        borderRadius: ".3rem",
       }}
       className={collapsed ? "collapsedSidebar" : ""}
     >
@@ -120,7 +115,7 @@ const SideBar = () => {
             height: "4rem",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 10px",
+            padding: "0px 10px",
             borderBottom: !collapsed ? "1px solid #C1C9D2" : "none",
           }}
         >
@@ -138,12 +133,13 @@ const SideBar = () => {
           )}
           <Button
             type="text"
-            icon={<MenuIcon style={{ color: "#8792A2" }} />}
+            icon={<MenuIcon />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
               fontSize: "16px",
               width: 64,
               height: 64,
+              color: "#8792A2",
             }}
           />
         </div>

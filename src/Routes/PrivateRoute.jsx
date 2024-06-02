@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import Loader from "../Components/Loader";
 
 function PrivateRoute() {
-  const [ok, setOk] = useState(false);
+  const [ok, setOk] = useState(null); // initially null to indicate loading
   const token = localStorage.getItem("access_token");
+
   useEffect(() => {
-    if (token) {
-      setOk(true);
-    } else {
-      setOk(false);
-    }
+    // Simulating an async check for token
+    setTimeout(() => {
+      if (token) {
+        setOk(true);
+      } else {
+        setOk(false);
+      }
+    }, 100); // Simulate network delay
   }, [token]);
-  return  ok ? <Outlet /> : <Loader />;
+
+  if (ok === null) return <Loader />; // Show loader while checking
+  return ok ? <Outlet /> : <Navigate to="/login" />;
 }
 
 export default PrivateRoute;
