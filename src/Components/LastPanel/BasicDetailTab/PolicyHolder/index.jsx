@@ -1,51 +1,58 @@
 import React, { useState } from "react";
-import { Button, Descriptions, Input, Table } from "antd";
+import { Button, Table } from "antd";
+import EditIcon from "@mui/icons-material/Edit";
+
 import "./style.css";
 
-function InsuranceTab() {
+function PolicyHolder() {
   const [edit, setEdit] = useState(false);
 
   const columns = [
     {
-      title: "Name",
-      width: 100,
-      dataIndex: "name",
+      title: "#",
+      width: 50,
+      dataIndex: "key",
       fixed: "left",
+    },
+    {
+      title: "Insurance",
+      width: 150,
+      dataIndex: "insurance",
     },
     {
       title: "Policy#",
+      dataIndex: "policy",
       width: 100,
-      dataIndex: "age",
-    },
-    {
-      title: "Group#",
-      dataIndex: "address",
       fixed: "left",
     },
     {
-      title: "Holder",
-      dataIndex: "address",
+      title: "Group#",
+      dataIndex: "group",
+      width: 100,
+    },
+    {
+      width: 50,
+      title: "Action",
+      render: () => (
+        <span style={{ color: "#A3ACB9", cursor: "pointer" }}>
+          <EditIcon fontSize="small" />
+        </span>
+      ),
     },
   ];
 
   const data = [
     {
       key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York Park",
+      insurance: "Medicare of TX Regular inurance-Primary",
+      policy: "087122-12",
+      group: "TR54590",
     },
     {
       key: "2",
-      name: "John Brown",
-      age: 32,
-      address: "New York Park",
-    },
-    {
-      key: "3",
-      name: "John Brown",
-      age: 32,
-      address: "New York Park",
+      insurance: "Medicare of TX Regular inurance-Primary",
+      policy: "087122-12",
+      group: "TR54590",
     },
   ];
 
@@ -76,7 +83,7 @@ function InsuranceTab() {
               fontSize: "16px",
             }}
           >
-            Insurance
+            Policy Holder
           </div>
           <div style={{ display: "flex", gap: "10px" }}>
             <Button
@@ -92,16 +99,15 @@ function InsuranceTab() {
         </div>
 
         <Table
-          className="custom-table"
+          className="policy-holder-custom-table"
           dataSource={data}
           columns={columns}
           pagination={false}
-          // bordered={false}
-          size="inherit"
+          size="small"
           //   style={{ minWidth: 650 }}
         />
       </div>
     </div>
   );
 }
-export default InsuranceTab;
+export default PolicyHolder;

@@ -6,8 +6,10 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import "./style.css";
 import LastPanel from "../../Components/LastPanel";
 import MainHeader from "../../Components/MainHeader";
-const { Header, Sider, Content } = Layout;
+import { useNavigate } from "react-router-dom";
+const { Header,  } = Layout;
 const ClaimsDetail = () => {
+  const navigate=useNavigate()
   return (
     <>
       <MainHeader />
@@ -39,6 +41,7 @@ const ClaimsDetail = () => {
                   <KeyboardReturnIcon
                     fontSize="small"
                     style={{ marginRight: 2, fontSize: 18 }}
+                    onClick={() => navigate("/claimslist")}
                   />
                   Back
                 </Button>
@@ -48,8 +51,7 @@ const ClaimsDetail = () => {
                     {
                       title: (
                         <p style={{ color: "black", marginLeft: "1rem" }}>
-                   
-                          Jenny Andrews  10/10/1990
+                          Jenny Andrews 10/10/1990
                         </p>
                       ),
                     },

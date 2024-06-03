@@ -3,6 +3,8 @@ import { Tabs } from "antd";
 import "./style.css";
 
 import Charges from "./Charges";
+import Payments from "./Payments";
+import Charts from "./Charts";
 
 const onChange = (key) => {
   console.log(key);
@@ -39,7 +41,7 @@ const items = [
         Payments
       </div>
     ),
-    children: <Charges />,
+    children: <Payments />,
   },
   {
     key: "3",
@@ -55,7 +57,7 @@ const items = [
         Charts
       </div>
     ),
-    children: <Charges />,
+    children: <Charts />,
   },
   {
     key: "4",

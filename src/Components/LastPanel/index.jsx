@@ -52,11 +52,10 @@ const LastPanel = () => (
       key: elem.key,
       children: (
         <div
-          className="tab-content scrollbarY--custom"
+          // className="tab-content scrollbarY--custom"
           key={`tab-content-${elem.key}`}
         >
-          <PatientInfo />
-          <InsuranceTab />
+         <BasicDetailTab/>
         </div>
       ),
     }))}

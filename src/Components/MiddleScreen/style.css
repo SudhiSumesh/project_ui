@@ -1,12 +1,83 @@
-.ant-layout-header {
+/* 
+
+.add-charges-modal {
+  padding: 1.2rem;
+}
+
+.add-charges-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+.add-charges-modal .modal-header .modal-btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.add-charges-modal .modal-header .heading-text{
+  color: #109590;
+  font-size: 1.2rem;
+  font-weight: 500;
+
+
+ } */
+
+
+.add-charges-modal {
+  padding: 1rem;
+}
+
+ .ant-layout-header {
   background: none;
 }
 /* Custom styles for Ant Design Tabs */
 .custom-tabs .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
   border: none !important;
 }
+
 .add-btn {
   position: absolute;
   bottom: 20px;
   right: 20px;
+}
+
+.custom-modal .ant-modal-content {
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.custom-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.custom-modal .heading-text {
+  color: #109590;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.custom-modal .modal-btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.custom-modal .modal-controls {
+  display: flex;
+  justify-content: space-between;
+  /* gap: 0.5rem; */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.custom-modal .modal-controls >div{
+  display: flex;
+  gap: 1rem;
+}
+.modal-controll-btns-left >button{
+  width: 100px;
+}
+.custom-modal .modal-table-container {
+  margin-top: 1rem;
 }

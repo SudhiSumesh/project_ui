@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button, Layout, Menu, Dropdown, Space } from "antd";
+import { Button, Layout,  Dropdown, Space } from "antd";
 import "./style.css";
 
 const { Sider } = Layout;
@@ -104,6 +104,7 @@ const SideBar = () => {
         minHeight: "100vh",
         // paddingRight: ".9rem",
         borderRadius: ".3rem",
+        display:'flex'
       }}
       className={collapsed ? "collapsedSidebar" : ""}
     >
