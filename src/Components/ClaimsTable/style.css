@@ -66,3 +66,13 @@
 
 /* tool tip */
 
+/* TOTEL SUMMERY ROW */
+
+
+.sticky-summary-row {
+  position: sticky;
+  bottom: 0;
+  background-color: white; /* Ensure it doesn't get hidden by other elements */
+  z-index: 1; /* Ensure it stays above the scrollable content */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for visual separation */
+}

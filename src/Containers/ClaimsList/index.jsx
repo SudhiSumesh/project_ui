@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainHeader from "../../Components/MainHeader";
 import ClaimsTable from "../../Components/ClaimsTable";
 import Form from "../../Components/Form";
+import { providerList } from "../../Helpers/enums";
 import {
   Button,
   DatePicker,
@@ -11,18 +12,31 @@ import {
   Select,
   Dropdown,
   Modal,
-
 } from "antd";
 import PolylineIcon from "@mui/icons-material/Polyline";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddIcon from "@mui/icons-material/Add";
 
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { getClaimsData } from "../../Redux/Claim/claim.actions";
 
 function ClaimsList() {
   const { Search } = Input;
+  const dispatch = useDispatch();
+  //modal state
   const [openAdd, setOpenAdd] = useState(false);
+  //pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
+  const [start, setStart] = useState(0);
+  const [limit, setLimit] = useState(50);
+  //filter states
+  const [selectedProvider, setSelectedProvider] = useState(null);
 
+  //popover visibility state
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  //Modal functions
   const handleOpenAdd = () => {
     // setFields(defaultFields);
     // setEdit(false);
@@ -31,26 +45,68 @@ function ClaimsList() {
   const closeAdd = () => {
     setOpenAdd(false);
   };
+  //pagination
+  useEffect(() => {
+    // Calculate start and limit based on current page and page size
+    setStart((currentPage - 1) * pageSize);
+    setLimit(pageSize);
+  }, [currentPage, pageSize]);
 
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
+  const handlePageSizeChange = (current, size) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page
+  };
+  //provaiders from enum
+  const providers = providerList.map((provider) => {
+    return {
+      value: provider.id,
+      label: provider.fullName,
+    };
+  });
+  const handleProviderInputChange = (value) => {
+    console.log("Selected provider:", value);
+    setSelectedProvider(value);
+  };
+
+  //fetch table data with filters
+  const fetchData = () => {
+    dispatch(
+      getClaimsData({
+        clinicId: 93422,
+        start: start,
+        limit: limit,
+        providerIds: selectedProvider,
+        // serviceIds: "0",
+        // status: "0",
+        // startDate: lastYear(new Date()),
+        // endDate: formatDate(new Date()),
+        // facilityIds: "0",
+        // patientName :"",
+      })
+    );
+    setPopoverOpen(false); // Close the popover
+  };
+
+  //filter popover
   const FilterPopover = (
     <div style={{ display: "flex", gap: "16px" }}>
       <Select
         className="custom-select"
         title="Current Filters"
-        placeholder="Current Filters"
+        placeholder="Provider"
         style={{ width: "180px" }}
         allowClear
         popupMatchSelectWidth={false}
-        options={[
-          { value: "83622", label: "Demo Clinic" },
-          { value: "93722", label: "Beats Cardiology" },
-          { value: "93422", label: "Heart 360 Speciality" },
-        ]}
+        options={providers}
+        onChange={handleProviderInputChange}
       />
-      <DatePicker className="custom-select" format="MM-DD-YYYY" />
       <Select
         className="custom-select"
-        placeholder="Clinicians"
+        placeholder="Service"
         style={{ width: "120px" }}
         allowClear
         popupMatchSelectWidth={false}
@@ -62,7 +118,7 @@ function ClaimsList() {
       />
       <Select
         className="custom-select"
-        placeholder="Locations"
+        placeholder="Facility"
         style={{ width: "120px" }}
         allowClear
         popupMatchSelectWidth={false}
@@ -74,7 +130,7 @@ function ClaimsList() {
       />
       <Select
         className="custom-select"
-        placeholder="Charges"
+        placeholder="Claim Status"
         style={{ width: "120px" }}
         allowClear
         popupMatchSelectWidth={false}
@@ -82,7 +138,7 @@ function ClaimsList() {
       />
       <Select
         className="custom-select"
-        placeholder="Status"
+        placeholder="Period"
         style={{ width: "120px" }}
         allowClear
         popupMatchSelectWidth={false}
@@ -92,23 +148,16 @@ function ClaimsList() {
           { value: "93422", label: "Rejected" },
         ]}
       />
-      <Select
-        size="medium"
-        className="custom-select"
-        placeholder="Appointment"
-        style={{ width: "160px" }}
-        allowClear
-        popupMatchSelectWidth={false}
-        options={[
-          { value: "83622", label: "Open" },
-          { value: "93722", label: "In progress" },
-          { value: "93422", label: "Completed" },
-        ]}
-      />
+      <DatePicker className="custom-select" format="MM-DD-YYYY" />
       <Button ghost className="rounded-md" type="primary" size="medium">
         Clear
       </Button>
-      <Button type="primary" size="medium" className="rounded-md">
+      <Button
+        type="primary"
+        size="medium"
+        className="rounded-md"
+        onClick={fetchData}
+      >
         Search
       </Button>
     </div>
@@ -175,11 +224,14 @@ function ClaimsList() {
         <div>
           <Pagination
             size="small"
-            total={200}
-            defaultPageSize={50}
+            total={200} // Total number of items
+            current={currentPage}
+            pageSize={pageSize}
             pageSizeOptions={[50, 100, 150, 200]}
             showSizeChanger
             showQuickJumper
+            onChange={handlePageChange}
+            onShowSizeChange={handlePageSizeChange}
           />
         </div>
         <div className="flex-space-between flex">
@@ -196,11 +248,12 @@ function ClaimsList() {
         </div>
         <div className="search-bar flex-space-between">
           <Search size="" style={{ width: "320px" }} placeholder="Search ..." />
-
           <Popover
             placement="bottomRight"
             content={FilterPopover}
             trigger="click"
+            open={popoverOpen}
+            onOpenChange={setPopoverOpen}
           >
             <Button type="primary" ghost size="medium" className="flex-center">
               <PolylineIcon style={{ fontSize: "14px", marginRight: "2px" }} />
@@ -229,7 +282,11 @@ function ClaimsList() {
       {/* Claims middle section end */}
 
       <div style={{ paddingInline: "2rem", marginBlock: "1rem" }}>
-        <ClaimsTable />
+        <ClaimsTable
+          start={start}
+          limit={limit}
+     
+        />
       </div>
     </div>
   );

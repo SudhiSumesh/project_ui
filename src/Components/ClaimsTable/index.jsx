@@ -3,22 +3,18 @@ import { ConfigProvider, Table, Tooltip } from "antd";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MenuIcon from "@mui/icons-material/Menu";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import DragHandleIcon from "@mui/icons-material/DragHandle";
-import RateReviewIcon from "@mui/icons-material/RateReview";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import "./style.css";
 import { getClaimsData } from "../../Redux/Claim/claim.actions";
 import { useNavigate } from "react-router-dom";
 
-const ClaimsTable = () => {
+const ClaimsTable = ({ start, limit }) => {
   const [selectionType, setSelectionType] = useState("checkbox");
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { claimData } = useSelector((state) => state.claim);
-//status
+  //status
   const statuses = [
     // { name: "All Statuses", value: 0 },
     { name: "Visit Completed", value: 1 },
@@ -36,7 +32,7 @@ const ClaimsTable = () => {
     { name: "Clar Closed", value: 13 },
     { name: "On Hold", value: 14 },
   ];
-//trim text
+  //trim text
   const truncateText = (text, length) => {
     if (text?.length <= length) return text;
     return text?.slice(0, length) + "...";
@@ -169,7 +165,7 @@ const ClaimsTable = () => {
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
     const year = d.getFullYear();
-    return `${year}/${month}/${day}`;
+    return `${year}-${month}-${day}`;
   };
 
   const lastYear = (date) => {
@@ -178,56 +174,72 @@ const ClaimsTable = () => {
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
     const year = d.getFullYear() - 1;
-    return `${year}/${month}/${day}`;
+    return `${year}-${month}-${day}`;
   };
 
   useEffect(() => {
     const fetchData = () => {
       dispatch(
         getClaimsData({
-          iclinicId: 93422,
-          btReportType: 1,
-          sstartDate: lastYear(new Date()),
-          sendDate: formatDate(new Date()),
-          iproviderId: 0,
-          payorId: 0,
-          blLedgerDos: true,
-          btexportType: 1,
-          btrptType: 1,
-          status: "0",
-          facilityId: "0",
-          serviceId: "0",
-          sproviderIds: "0",
-          offset: 0,
+          // iclinicId: 93422,
+          // btReportType: 1,
+          // sstartDate: ,
+          // sendDate: ,
+          // iproviderId: 0,
+          // payorId: 0,
+          // blLedgerDos: true,
+          // btexportType: 1,
+          // btrptType: 1,
+          // status: "0",
+          // facilityId: "0",
+          // serviceId: "0",
+          // s: "0",
+          // offset: 0,
+          clinicId: 93422,
+          start: start,
+          limit: limit,
+          // serviceIds: "0",
+          // status: "0",
+          startDate: lastYear(new Date()),
+          endDate: formatDate(new Date()),
+          // facilityIds: "0",
+          // patientName :"",
         })
       );
     };
     fetchData();
-  }, []);
+  }, [start, limit]);
 
   useEffect(() => {
     if (claimData?.result?.providerSummary) {
       setData(
         claimData.result.providerSummary.map((item, index) => ({
           key: index + 1,
-          patientName: item.spatientName,
+          patientName: item.spatientName ?? "",
           // FirstName: "Jenny",
-          mrn: item.smrn,
-          dos: formatDate(item.sdos),
-          provider: item.sproviderName,
-          payor: item.payorName,
-          facility: item.facilityName,
+          mrn: item.smrn ?? "",
+          dos: formatDate(item.sdos) ?? "",
+          provider: item.sproviderName ?? "",
+          payor: item.payorName ?? "",
+          facility: item.facilityName ?? "",
           service: item.serviceName ?? "",
-          charges: `$${item.dcharges}`,
-          payments: `$${item.dpayments}`,
-          insBal: ` $${item.insuranceBalance}.00`,
-          patBal: `$${item.patientBalance}.00`,
-          claimStatus: item.claimStatus?statuses[item.claimStatus - 1].name:'',
+          charges: `$${item.dcharges}` ?? "$ 0.00",
+          payments: `$${item.dpayments}` ?? "$ 0.00",
+          insBal: ` $${item.insuranceBalance}.00` ?? "$ 0.00",
+          patBal: `$${item.patientBalance}.00` ?? "$ 0.00",
+          claimStatus: item.claimStatus
+            ? statuses[item.claimStatus - 1].name
+            : "",
         }))
       );
     }
   }, [claimData]);
 
+  // Calculate totals
+  const totalCharges = claimData?.result?.reportSummary?.dtotalCharges;
+  const totalPayments = claimData?.result?.reportSummary?.dtotalPatientBalance;
+  const totalInsBal = claimData?.result?.reportSummary?.dtotalInsuranceBalance;
+  const totalPatBal = claimData?.result?.reportSummary?.dtotalPayments;
   return (
     <div>
       <ConfigProvider
@@ -253,6 +265,26 @@ const ClaimsTable = () => {
           dataSource={data}
           size="small"
           scroll={{ y: "calc(100vh - 200px)" }}
+          summary={() => (
+            <Table.Summary.Row className="  sticky-summary-row">
+              <Table.Summary.Cell index={0} colSpan={8}>
+                Grand Total
+              </Table.Summary.Cell>
+              <Table.Summary.Cell index={7}>
+                {totalCharges?.toFixed(2)}
+              </Table.Summary.Cell>
+              <Table.Summary.Cell index={8}>
+                {totalPayments?.toFixed(2)}
+              </Table.Summary.Cell>
+              <Table.Summary.Cell index={9}>
+                {totalInsBal?.toFixed(2)}
+              </Table.Summary.Cell>
+              <Table.Summary.Cell index={10}>
+                {totalPatBal?.toFixed(2)}
+              </Table.Summary.Cell>
+              <Table.Summary.Cell index={11} colSpan={2}></Table.Summary.Cell>
+            </Table.Summary.Row>
+          )}
           pagination={false}
         />
       </ConfigProvider>
