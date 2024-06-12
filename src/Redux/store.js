@@ -1,16 +1,18 @@
-import { configureStore } from '@reduxjs/toolkit'
-import loginReducer from './Login/login.reducer'
-import priorReducer from './PriorAuth/PriorAuthApis/prior.reducer'
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
+import loginReducer from "./Login/login.reducer";
+import priorReducer from "./PriorAuth/PriorAuthApis/prior.reducer";
 import productionReducer from "./Production/productions.reducer";
+import claimsReducer from "./Claim/claim.reducer";
 
-import { combineReducers } from 'redux'
 const rootReducer = combineReducers({
   login: loginReducer,
   prior: priorReducer,
   production: productionReducer,
+  claim: claimsReducer,
 });
 const store = configureStore({
   reducer: rootReducer,
-})
+});
 
-export default store
+export default store;

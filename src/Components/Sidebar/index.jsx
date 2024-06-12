@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button, Layout,  Dropdown, Space } from "antd";
+import { Button, Layout, Dropdown, Space } from "antd";
 import "./style.css";
-
-const { Sider } = Layout;
-
 const items = [
   {
     label: "1st menu item",
@@ -32,64 +29,71 @@ const items = [
     disabled: true,
   },
 ];
+const SideBar = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [selected, setSelected] = useState(false);
+  const { Sider } = Layout;
 
-const sideBarContent = (
-  <div
-    className="sideBarContent"
-    style={{
-      padding: "10px",
-      borderBottom: "1px solid #C1C9D2",
-      width: "100%",
-    }}
-  >
+  const sideBarContent = (
     <div
+      className="sideBarContent "
       style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "10px",
         padding: "10px",
-        border: "1px solid #8792A2",
-        borderRadius: "10px",
+        borderBottom: "1px solid #C1C9D2",
         width: "100%",
       }}
     >
+      {/* use ref or something to uniquly identify each element do some changes in the sidebarComponent ,for change bgcolor on selecting each item  */}
       <div
+        onClick={() => {
+          setSelected(!selected);
+        }}
+        className={selected ? " selected-bg" : ""}
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           gap: "10px",
-        }}
-      >
-        <span style={{ fontSize: "14px", fontWeight: "700", color: "#8792A2" }}>
-          Amie Patient (17/08/2003)
-        </span>
-        <a href="#">Edit</a>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
+          padding: "10px",
+          border: "1px solid #8792A2",
+          borderRadius: "10px",
           width: "100%",
-          color: "#8792A2",
         }}
       >
-        <span>shwarts, BMD</span>
-        <span>BCBS OF TX</span>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            gap: "10px",
+          }}
+        >
+          <span
+            style={{ fontSize: "14px", fontWeight: "700", color: "#8792A2" }}
+          >
+            Amie Patient (17/08/2003)
+          </span>
+          <a href="#">Edit</a>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            color: "#8792A2",
+          }}
+        >
+          <span>shwarts, BMD</span>
+          <span>BCBS OF TX</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 
-const menuProps = {
-  items,
-};
-
-const SideBar = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
+  const menuProps = {
+    items,
+  };
   return (
     <Sider
       width={!collapsed ? 255 : 40}
@@ -104,7 +108,7 @@ const SideBar = () => {
         minHeight: "100vh",
         // paddingRight: ".9rem",
         borderRadius: ".3rem",
-        display:'flex'
+        display: "flex",
       }}
       className={collapsed ? "collapsedSidebar" : ""}
     >
@@ -144,6 +148,7 @@ const SideBar = () => {
             }}
           />
         </div>
+        {/* use ref or something to uniquly identify each element do some changes in the sidebarComponent ,for change bgcolor on selecting each item  */}
         {sideBarContent}
         {sideBarContent}
         {sideBarContent}

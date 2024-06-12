@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MainHeader from "../../Components/MainHeader";
 import ClaimsTable from "../../Components/ClaimsTable";
+import Form from "../../Components/Form";
 import {
   Button,
   DatePicker,
@@ -10,11 +11,12 @@ import {
   Select,
   Dropdown,
   Modal,
-  Descriptions,
+
 } from "antd";
 import PolylineIcon from "@mui/icons-material/Polyline";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddIcon from "@mui/icons-material/Add";
+
 import "./style.css";
 
 function ClaimsList() {
@@ -151,19 +153,15 @@ function ClaimsList() {
   return (
     <div>
       <Modal
-        title={"Add "}
+        title={""}
         open={openAdd}
         onOk={() => closeAdd()}
-        onCancel={() => closeAdd()}
+        // onCancel={() => closeAdd()}
+        footer={null}
+        closable={false}
         width={800}
       >
-        <div style={{ display: "flex", gap: "18px", paddingTop: "16px" }}>
-          <Descriptions
-            layout="vertical"
-            className="form_container"
-            // items={setItems()}
-          />
-        </div>
+        <Form closeAdd={closeAdd} /> {/* add claim form */}
       </Modal>
       <MainHeader />
       {/* Claims middle section start */}

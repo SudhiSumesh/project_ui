@@ -3,120 +3,165 @@ import { ConfigProvider, Table, Tooltip } from "antd";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
+import MenuIcon from "@mui/icons-material/Menu";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import DragHandleIcon from "@mui/icons-material/DragHandle";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import "./style.css";
-import { getProductionDetailed } from "../../Redux/Production/production.actions";
+import { getClaimsData } from "../../Redux/Claim/claim.actions";
 import { useNavigate } from "react-router-dom";
-
 
 const ClaimsTable = () => {
   const [selectionType, setSelectionType] = useState("checkbox");
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
-  const { prodDetailed } = useSelector((state) => state.production);
-
-const truncateText = (text, length) => {
-  if (text?.length <= length) return text;
-  return text?.slice(0, length) + "...";
-};
-const columns = [
-  {
-    title: "Last Name",
-    dataIndex: "lastName",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "First Name",
-    dataIndex: "FirstName",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "MRN",
-    dataIndex: "MRN",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "DOS",
-    dataIndex: "DOS",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "Phone No",
-    dataIndex: "PhoneNo",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "Provider",
-    dataIndex: "Provider",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "Facility",
-    dataIndex: "Facility",
-    render: (text) => (
-      <Tooltip title={text}>
+  const navigate = useNavigate();
+  const { claimData } = useSelector((state) => state.claim);
+//status
+  const statuses = [
+    // { name: "All Statuses", value: 0 },
+    { name: "Visit Completed", value: 1 },
+    { name: "Created", value: 2 },
+    { name: "Filed", value: 3 },
+    { name: "Rejected", value: 4 },
+    { name: "Denied", value: 5 },
+    { name: "Sec Ready", value: 6 },
+    { name: "Sec Pending", value: 7 },
+    { name: "Ter Ready", value: 8 },
+    { name: "Ter Pending", value: 9 },
+    { name: "Pat Balance", value: 10 },
+    { name: "Closed", value: 11 },
+    { name: "Clar Opened", value: 12 },
+    { name: "Clar Closed", value: 13 },
+    { name: "On Hold", value: 14 },
+  ];
+//trim text
+  const truncateText = (text, length) => {
+    if (text?.length <= length) return text;
+    return text?.slice(0, length) + "...";
+  };
+  //table columns
+  const columns = [
+    {
+      title: "Patient Name",
+      dataIndex: "patientName",
+      render: (text) => (
         <span className="table-item">{truncateText(text, 14)}</span>
-      </Tooltip>
-    ),
-  },
-  {
-    title: "Insurance",
-    dataIndex: "Insurance",
-    render: (text) => (
-      <span className="table-item">{truncateText(text, 14)}</span>
-    ),
-  },
-  {
-    title: "Claim Status",
-    dataIndex: "ClaimsStatus",
-    render: (text) => <span className="table-item">{text}</span>,
-  },
-  {
-    title: "Ins Bal",
-    dataIndex: "insBal",
-    render: (text) => <span className="table-item">{text}</span>,
-  },
-  {
-    title: "Pat Bal",
-    dataIndex: "PatBal",
-    render: (text) => <span className="table-item">{text}</span>,
-  },
-  {
-    title: "Action",
-    render: () => (
-      <span style={{ color: "#A3ACB9", cursor: "pointer" }}>
-        <EditIcon
-          fontSize="small"
-          onClick={() => navigate("/claimslist/claims-details")}
-        />
-        <DeleteIcon fontSize="small" />
-      </span>
-    ),
-  },
-];
+      ),
+    },
 
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-};
+    {
+      title: "MRN",
+      dataIndex: "mrn",
+      render: (text) => (
+        <span className="table-item">{truncateText(text, 14)}</span>
+      ),
+    },
+    {
+      title: "DOS",
+      dataIndex: "dos",
+      render: (text) => (
+        <span className="table-item">{truncateText(text, 14)}</span>
+      ),
+    },
+    {
+      title: "Provider",
+      dataIndex: "provider",
+      render: (text) => (
+        <Tooltip title={text}>
+          <span className="table-item">{truncateText(text, 14)}</span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: "Payor",
+      dataIndex: "payor",
+      render: (text) => (
+        <Tooltip title={text}>
+          <span className="table-item">{truncateText(text, 10)}</span>
+        </Tooltip>
+      ),
+    },
 
+    {
+      title: "Facility",
+      dataIndex: "facility",
+      render: (text) => (
+        <Tooltip title={text}>
+          <span className="table-item">{truncateText(text, 12)}</span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: "Service",
+      dataIndex: "service",
+      render: (text) => (
+        <Tooltip title={text}>
+          <span className="table-item">{truncateText(text, 14)}</span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: "Charges",
+      dataIndex: "charges",
+      render: (text) => <span className="table-item">{text}</span>,
+    },
+    {
+      title: "Payments",
+      dataIndex: "payments",
+      render: (text) => <span className="table-item">{text}</span>,
+    },
+    {
+      title: "Ins Bal",
+      dataIndex: "insBal",
+      render: (text) => <span className="table-item">{text}</span>,
+    },
+    {
+      title: "Pat Bal",
+      dataIndex: "patBal",
+      render: (text) => <span className="table-item">{text}</span>,
+    },
+    {
+      title: "Claim Status",
+      dataIndex: "claimStatus",
+      render: (text) => (
+        <Tooltip title={text}>
+          <span className="table-item">{truncateText(text, 10)}</span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: "Action",
+      render: () => (
+        <span
+          style={{
+            color: "#A3ACB9",
+            cursor: "pointer",
+            display: "flex",
+            gap: "5px",
+          }}
+        >
+          <ViewListIcon
+            fontSize="small"
+            onClick={() => navigate("/claimslist/claims-details")}
+          ></ViewListIcon>
+          <EditIcon fontSize="small" />
+          <DeleteIcon fontSize="small" />
+        </span>
+      ),
+    },
+  ];
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+  };
 
   const formatDate = (date) => {
     if (!date) return null;
@@ -124,7 +169,7 @@ const rowSelection = {
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
     const year = d.getFullYear();
-    return `${year}-${month}-${day}`;
+    return `${year}/${month}/${day}`;
   };
 
   const lastYear = (date) => {
@@ -133,13 +178,13 @@ const rowSelection = {
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
     const year = d.getFullYear() - 1;
-    return `${year}-${month}-${day}`;
+    return `${year}/${month}/${day}`;
   };
 
   useEffect(() => {
     const fetchData = () => {
       dispatch(
-        getProductionDetailed({
+        getClaimsData({
           iclinicId: 93422,
           btReportType: 1,
           sstartDate: lastYear(new Date()),
@@ -161,25 +206,27 @@ const rowSelection = {
   }, []);
 
   useEffect(() => {
-    if (prodDetailed?.data?.result?.providerSummary) {
+    if (claimData?.result?.providerSummary) {
       setData(
-        prodDetailed.data.result.providerSummary.map((item, index) => ({
+        claimData.result.providerSummary.map((item, index) => ({
           key: index + 1,
-          lastName: item.spatientName,
-          FirstName: "Jenny",
-          MRN: item.smrn,
-          DOS: item.sdos,
-          PhoneNo: "(205) 789-1111",
-          Provider: item.sproviderName,
-          Facility: item.facilityName,
-          Insurance: "Medicare",
-          ClaimsStatus: "Closed",
-          insBal: ` $ ${item.insuranceBalance}.00`,
-          PatBal: `$ ${item.patientBalance}.00`,
+          patientName: item.spatientName,
+          // FirstName: "Jenny",
+          mrn: item.smrn,
+          dos: formatDate(item.sdos),
+          provider: item.sproviderName,
+          payor: item.payorName,
+          facility: item.facilityName,
+          service: item.serviceName ?? "",
+          charges: `$${item.dcharges}`,
+          payments: `$${item.dpayments}`,
+          insBal: ` $${item.insuranceBalance}.00`,
+          patBal: `$${item.patientBalance}.00`,
+          claimStatus: item.claimStatus?statuses[item.claimStatus - 1].name:'',
         }))
       );
     }
-  }, [prodDetailed]);
+  }, [claimData]);
 
   return (
     <div>

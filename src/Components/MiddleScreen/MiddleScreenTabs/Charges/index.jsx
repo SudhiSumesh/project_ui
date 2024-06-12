@@ -1,13 +1,13 @@
 import React from "react";
-import PatientClaims from "./PatientClaims";
+import Diagnosis from "./Diagnosis";
+import Services from "./Services";
 
 function Charges() {
   return (
     <>
       <div className="tab-content scrollbarY--custom">
-        <PatientClaims />
-        <PatientClaims />
-        <PatientClaims />
+        <Diagnosis />
+    <Services/>
       </div>
     </>
   );

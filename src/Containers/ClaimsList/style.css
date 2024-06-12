@@ -10,7 +10,7 @@
   padding-left: 2px;
   border-radius: 0.2rem;
   font-weight: 500;
-  box-shadow: 0 0 2px  0 ;
+  box-shadow: 0 0 2px 0;
 }
 .claim-status-box span {
   font-size: 16px;
@@ -35,5 +35,5 @@
 }
 
 .custom-checkbox:checked {
-  accent-color: #139696 /* Color when checked */
+  accent-color: #139696; /* Color when checked */
 }
