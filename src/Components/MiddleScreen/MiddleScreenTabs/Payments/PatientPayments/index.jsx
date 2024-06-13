@@ -42,13 +42,14 @@ function PatientPayments() {
 
   return (
     <div>
+      {/* <Descriptions> </Descriptions> */}
       <div
         // className="p-md"
         style={{
           border: "1px solid #D7E0E9",
           borderRadius: "10px",
           backgroundColor: "#ffff",
-          paddingBlock: "1rem",
+          paddingTop: "1rem",
         }}
       >
         <div
@@ -82,8 +83,8 @@ function PatientPayments() {
             </Button>
           </div>
         </div>
-
-        <div className="flex-space-between " style={{ padding: ".3rem" }}>
+        <Descriptions></Descriptions>
+        <div className="flex-space-between " style={{ padding: "1rem" }}>
           <div className={"semibold"} style={{ color: "#4F566B" }}>
             Billed: $368
           </div>
@@ -101,11 +102,12 @@ function PatientPayments() {
         {expand && (
           <div>
             <Table
-              className="custom-table"
+              className="custom-table-payment"
               columns={columns}
               dataSource={data}
               pagination={false}
               // bordered
+              bordered={false}
             />
           </div>
         )}

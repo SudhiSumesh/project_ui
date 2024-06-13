@@ -8,7 +8,16 @@ import "./style.css";
 import { getClaimsData } from "../../Redux/Claim/claim.actions";
 import { useNavigate } from "react-router-dom";
 
-const ClaimsTable = ({ start, limit }) => {
+const ClaimsTable = ({
+  start,
+  limit,
+  selectedServices,
+  selectedProvider,
+  selectedFacility,
+  selectedStatus,
+  startDate,
+  endDate,
+}) => {
   const [selectionType, setSelectionType] = useState("checkbox");
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
@@ -185,7 +194,6 @@ const ClaimsTable = ({ start, limit }) => {
           // btReportType: 1,
           // sstartDate: ,
           // sendDate: ,
-          // iproviderId: 0,
           // payorId: 0,
           // blLedgerDos: true,
           // btexportType: 1,
@@ -198,11 +206,12 @@ const ClaimsTable = ({ start, limit }) => {
           clinicId: 93422,
           start: start,
           limit: limit,
-          // serviceIds: "0",
-          // status: "0",
-          startDate: lastYear(new Date()),
+          providerId: selectedProvider,
+          serviceIds: selectedServices,
+          facilityIds: selectedFacility,
+          status: selectedStatus,
+          startDate:   lastYear(new Date()),
           endDate: formatDate(new Date()),
-          // facilityIds: "0",
           // patientName :"",
         })
       );
@@ -237,9 +246,9 @@ const ClaimsTable = ({ start, limit }) => {
 
   // Calculate totals
   const totalCharges = claimData?.result?.reportSummary?.dtotalCharges;
-  const totalPayments = claimData?.result?.reportSummary?.dtotalPatientBalance;
+  const totalPayments = claimData?.result?.reportSummary?.dtotalPayments;
   const totalInsBal = claimData?.result?.reportSummary?.dtotalInsuranceBalance;
-  const totalPatBal = claimData?.result?.reportSummary?.dtotalPayments;
+  const totalPatBal = claimData?.result?.reportSummary?.dtotalPatientBalance;
   return (
     <div>
       <ConfigProvider

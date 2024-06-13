@@ -11,23 +11,24 @@
     border-bottom: 1px solid #139696 ;
   }
 
-   .custom-table {
-    width: 100%;
-    border:1px solid #D7E0E9;
-    border-collapse: collapse;
-    border-spacing: 0;
-  
+   .custom-table-payment {
+    /* width: 100%; */
+    border-top:1px solid #D7E0E9;
+    /* border-collapse: collapse; */
+    /* border-spacing: 0; */
+    /* border-radius: .1rem; */
+    /* border-bottom: none; */
   }
   
-  .custom-table .ant-table-thead > tr > th {
+  .custom-table-payment .ant-table-thead > tr > th {
     padding: 8px; 
 
   }
   
-  .custom-table .ant-table-tbody > tr > td {
+  .custom-table-payment .ant-table-tbody > tr > td {
     padding: 8px; 
   }
   
-  .custom-table .ant-table-thead > tr > th {
+  .custom-table-payment .ant-table-thead > tr > th {
     background-color: white;
   } 
