@@ -1,424 +1,13 @@
-// import React, { useEffect, useState } from "react";
-// import MainHeader from "../../Components/MainHeader";
-// import ClaimsTable from "../../Components/ClaimsTable";
-// import Form from "../../Components/Form";
-// import PolylineIcon from "@mui/icons-material/Polyline";
-// import FilterListIcon from "@mui/icons-material/FilterList";
-// import AddIcon from "@mui/icons-material/Add";
-// import { useDispatch } from "react-redux";
-// import { getClaimsData } from "../../Redux/Claim/claim.actions";
-// import {
-//   providerList,
-//   serviceList,
-//   FacilityList,
-//   statuses,
-// } from "../../Helpers/enums";
-// import {
-//   Button,
-//   DatePicker,
-//   Input,
-//   Pagination,
-//   Popover,
-//   Select,
-//   Dropdown,
-//   Modal,
-// } from "antd";
-// import "./style.css";
-
-// function ClaimsList() {
-//   const { Search } = Input;
-//   const date = new Date();
-//   const dispatch = useDispatch();
-//   const [startDate, setStartDate] = useState(new Date());
-//   const [endDate, setEndDate] = useState(new Date());
-//   //Modal state
-//   const [openAdd, setOpenAdd] = useState(false);
-//   //Pagination states
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [pageSize, setPageSize] = useState(50);
-//   const [start, setStart] = useState(0);
-//   const [limit, setLimit] = useState(50);
-//   //Filter states
-//   const [selectedProvider, setSelectedProvider] = useState([]);
-//   const [selectedServices, setSelectedServices] = useState([]);
-//   const [selectedFacility, setSelectedFacility] = useState([]);
-//   const [selectedStatus, setSelectedStatus] = useState("");
-//   //Popover visibility state
-//   const [popoverOpen, setPopoverOpen] = useState(false);
-
-//   //Modal functions
-//   const handleOpenAdd = () => {
-//     setOpenAdd(true);
-//   };
-//   const closeAdd = () => {
-//     setOpenAdd(false);
-//   };
-
-//   //Pagination
-//   useEffect(() => {
-//     // Calculate start and limit based on current page and page size
-//     setStart((currentPage - 1) * pageSize);
-//     setLimit(pageSize);
-//   }, [currentPage, pageSize]);
-
-//   const handlePageChange = (page, pageSize) => {
-//     setCurrentPage(page);
-//     setPageSize(pageSize);
-//   };
-//   const handlePageSizeChange = (current, size) => {
-//     setPageSize(size);
-//     setCurrentPage(1); // Reset to first page
-//   };
-//   //provaiders from enum
-//   const providers = providerList.map((provider) => {
-//     return {
-//       value: provider.id,
-//       label: provider.fullName,
-//     };
-//   });
-//   //services from enum
-//   const services = serviceList.map((service) => {
-//     return {
-//       value: service.id,
-//       label: service.name,
-//     };
-//   });
-//   // Facility from enum
-//   const facilitys = FacilityList.map((facility) => {
-//     return {
-//       value: facility.id,
-//       label: facility.locationName,
-//     };
-//   });
-//   //statuses from enum
-//   const status = statuses.map((status) => {
-//     return {
-//       value: status.value,
-//       label: status.name,
-//     };
-//   });
-
-//   //start&end date handle
-//   const handleStartDateChange = (date, dateString) => {
-//     console.log(date, dateString);
-//     setStartDate(dateString);
-//   };
-//   const handleEndDateChange = (date, dateString) => {
-//     console.log(date, dateString);
-//     setEndDate(dateString);
-//   };
-
-//   //format date
-//   const formatDate = (date) => {
-//     if (!date) return null;
-//     const d = new Date(date);
-//     const month = String(d.getMonth() + 1).padStart(2, "0");
-//     const day = String(d.getDate()).padStart(2, "0");
-//     const year = d.getFullYear();
-//     return `${year}-${month}-${day}`;
-//   };
-//   //handle filter clear
-//   const handleClear = () => {
-//     setSelectedProvider([]);
-//     setSelectedServices([]);
-//     setSelectedFacility([]);
-//     setSelectedStatus([]);
-//     setStartDate(null);
-//     setEndDate(null);
-//   };
-//   //fetch table data with filters
-//   const fetchData = () => {
-//     dispatch(
-//       getClaimsData({
-//         clinicId: 93422,
-//         start: start,
-//         limit: limit,
-//         providerIds: selectedProvider,
-//         serviceIds: selectedServices,
-//         status: selectedStatus,
-//         startDate: formatDate(startDate),
-//         endDate: formatDate(endDate),
-//         facilityIds: selectedFacility,
-//         // patientName :"",
-//       })
-//     );
-//     setPopoverOpen(false); // Close the popover
-//   };
-//   const tagRender = (props) => {
-//     const { label, value, closable, onClose } = props;
-//     //trim text
-//     const truncateText = (text, length) => {
-//       if (text?.length <= length) return text;
-//       return text?.slice(0, length) + "...";
-//     };
-//     return <div className="custom-tag">{truncateText(label, 10)}</div>;
-//   };
-//   //filter popover
-//   const FilterPopover = (
-//     <div style={{ display: "flex", gap: "16px" }}>
-//       <Select
-//         className="custom-select"
-//         title="Current Filters"
-//         placeholder="Provider"
-//         style={{ width: "160px" }}
-//         tagRender={tagRender}
-//         maxTagCount={1}
-//         maxTagPlaceholder={
-//           selectedProvider.length > 1
-//             ? `+${selectedProvider.length - 1}`
-//             : undefined
-//         }
-//         mode="multiple"
-//         allowClear
-//         popupMatchSelectWidth={false}
-//         options={providers}
-//         onChange={setSelectedProvider}
-//       />
-//       <Select
-//         className="custom-select"
-//         placeholder="Service"
-//         style={{ width: "160px" }}
-//         tagRender={tagRender}
-//         maxTagCount={1}
-//         maxTagPlaceholder={
-//           selectedServices.length > 1
-//             ? `+${selectedServices.length - 1}`
-//             : undefined
-//         }
-//         mode="multiple"
-//         allowClear
-//         popupMatchSelectWidth={false}
-//         options={services}
-//         onChange={setSelectedServices}
-//       />
-//       <Select
-//         className="custom-select"
-//         placeholder="Facility"
-//         style={{ width: "130px" }}
-//         tagRender={tagRender}
-//         allowClear
-//         maxTagCount={1}
-//         maxTagPlaceholder={
-//           selectedFacility.length > 1
-//             ? `+${selectedFacility.length - 1} `
-//             : undefined
-//         }
-//         mode="multiple"
-//         popupMatchSelectWidth={false}
-//         options={facilitys}
-//         onChange={setSelectedFacility}
-//       />
-//       <Select
-//         className="custom-select"
-//         placeholder="Claim Status"
-//         style={{ width: "130px" }}
-//         allowClear
-//         tagRender={tagRender}
-//         maxTagCount={1}
-//         maxTagPlaceholder={
-//           selectedStatus.length > 1
-//             ? `+${selectedStatus.length - 1} `
-//             : undefined
-//         }
-//         mode="multiple"
-//         popupMatchSelectWidth={false}
-//         options={status}
-//         onChange={setSelectedStatus}
-//       />
-//       {/* <Select
-//         className="custom-select"
-//         placeholder="Period"
-//         style={{ width: "120px" }}
-//         allowClear
-//         tagRender={tagRender}
-//         maxTagCount={1}
-//         maxTagPlaceholder={
-//           selectedProvider.length > 1
-//             ? `+${selectedProvider.length - 1} `
-//             : undefined
-//         }
-//         mode="multiple"
-//         popupMatchSelectWidth={false}
-//         options={[
-//           { value: "83622", label: "Open" },
-//           { value: "93722", label: "Closed" },
-//           { value: "93422", label: "Rejected" },
-//         ]}
-//       /> */}
-//       <DatePicker
-//         className="custom-select"
-//         format="MM-DD-YYYY"
-//         onChange={(date, dateString) => handleStartDateChange(date, dateString)}
-//       />
-//       <DatePicker
-//         className="custom-select"
-//         format="MM-DD-YYYY"
-//         onChange={(date, dateString) => handleEndDateChange(date, dateString)}
-//       />
-//       <Button
-//         ghost
-//         className="rounded-md"
-//         type="primary"
-//         size="medium"
-//         onClick={handleClear}
-//       >
-//         Clear
-//       </Button>
-//       <Button
-//         type="primary"
-//         size="medium"
-//         className="rounded-md"
-//         onClick={fetchData}
-//       >
-//         Search
-//       </Button>
-//     </div>
-//   );
-
-//   const Ditems = [
-//     {
-//       label: (
-//         <span>
-//           <input type="checkbox" className="custom-checkbox" />
-//           Location
-//         </span>
-//       ),
-//       key: "1",
-//     },
-//     {
-//       label: (
-//         <span>
-//           <input type="checkbox" className="custom-checkbox" /> Patient
-//         </span>
-//       ),
-//       key: "2",
-//     },
-//     {
-//       label: (
-//         <span>
-//           <input type="checkbox" className="custom-checkbox" /> Billed amount
-//         </span>
-//       ),
-//       key: "3",
-//     },
-//     {
-//       label: (
-//         <span>
-//           <input type="checkbox" className="custom-checkbox" /> Ins amount
-//         </span>
-//       ),
-//       key: "4",
-//     },
-//   ];
-
-//   return (
-//     <div>
-//       <Modal
-//         title={""}
-//         open={openAdd}
-//         onOk={() => closeAdd()}
-//         footer={null}
-//         closable={false}
-//         width={800}
-//       >
-//         <Form closeAdd={closeAdd} /> {/* add claim form */}
-//       </Modal>
-//       <MainHeader />
-//       {/* Claims middle section start */}
-//       <div
-//         className="flex-align-center flex-space-between"
-//         style={{
-//           paddingInline: "4rem",
-//           marginBlock: "1rem",
-//         }}
-//       >
-//         <div>
-//           <Pagination
-//             size="small"
-//             total={200} // Total number of items
-//             current={currentPage}
-//             pageSize={pageSize}
-//             pageSizeOptions={[50, 100, 150, 200]}
-//             showSizeChanger
-//             showQuickJumper
-//             onChange={handlePageChange}
-//             onShowSizeChange={handlePageSizeChange}
-//           />
-//         </div>
-//         <div className="flex-space-between flex">
-//           <div className="claim-status-open claim-status-box">
-//             Open
-//             <span>112</span>
-//           </div>
-//           <div className="claim-status-priority claim-status-box">
-//             Priority <span>58</span>
-//           </div>
-//           <div className="claim-status-overdue claim-status-box">
-//             Overdue <span>18</span>
-//           </div>
-//         </div>
-//         <div className="search-bar flex-space-between">
-//           <Search size="" style={{ width: "320px" }} placeholder="Search ..." />
-//           <Popover
-//             placement="bottomRight"
-//             content={FilterPopover}
-//             trigger="click"
-//             open={popoverOpen}
-//             onOpenChange={setPopoverOpen}
-//           >
-//             <Button type="primary" ghost size="medium" className="flex-center">
-//               <PolylineIcon style={{ fontSize: "14px", marginRight: "2px" }} />
-//               <span className="bold">Filters</span>
-//             </Button>
-//           </Popover>
-
-//           <Dropdown menu={{ items: Ditems }}>
-//             <Button type="primary" ghost size="medium" className="flex-center">
-//               <FilterListIcon
-//                 style={{ fontSize: "16px", marginRight: "2px" }}
-//               />
-//               <span className="bold">Sort</span>
-//             </Button>
-//           </Dropdown>
-
-//           <Button
-//             type="primary"
-//             shape="circle"
-//             size="medium"
-//             onClick={() => handleOpenAdd()}
-//             icon={<AddIcon />}
-//           />
-//         </div>
-//       </div>
-//       {/* Claims middle section end */}
-
-//       <div style={{ paddingInline: "2rem", marginBlock: "1rem" }}>
-//         <ClaimsTable
-//           start={start}
-//           limit={limit}
-//           selectedServices={selectedServices}
-//           selectedProvider={selectedProvider}
-//           selectedFacility={selectedFacility}
-//           selectedStatus={selectedStatus}
-//           startDate={startDate}
-//           endDate={endDate}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ClaimsList;
-
 import React, { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { getClaimsData } from "../../Redux/Claim/claim.actions";
 import MainHeader from "../../Components/MainHeader";
 import ClaimsTable from "../../Components/ClaimsTable";
 import Form from "../../Components/Form";
 import PolylineIcon from "@mui/icons-material/Polyline";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch } from "react-redux";
-import { getClaimsData } from "../../Redux/Claim/claim.actions";
 import {
   providerList,
   serviceList,
@@ -434,6 +23,8 @@ import {
   Select,
   Dropdown,
   Modal,
+  Menu,
+  Checkbox,
 } from "antd";
 import "./style.css";
 
@@ -449,6 +40,7 @@ function ClaimsList() {
     selectedServices: [],
     selectedFacility: [],
     selectedStatus: [],
+    searchQuery: "",
   });
   // State to manage modal visibility
   const [openAdd, setOpenAdd] = useState(false);
@@ -462,6 +54,46 @@ function ClaimsList() {
   // State to manage popover visibility
   const [popoverOpen, setPopoverOpen] = useState(false);
 
+  // State to sort columns
+  const [selectedColumns, setSelectedColumns] = useState([
+    "Patient Name",
+    "MRN",
+    "DOS",
+    "Provider",
+    "Payor",
+    "Facility",
+    "Service",
+    "Charges",
+    "Payments",
+    "Ins Bal",
+    "Pat Bal",
+    "Claim Status",
+    "Action",
+  ]);
+  const columns = [
+    "Patient Name",
+    "MRN",
+    "DOS",
+    "Provider",
+    "Payor",
+    "Facility",
+    "Service",
+    "Charges",
+    "Payments",
+    "Ins Bal",
+    "Pat Bal",
+    "Claim Status",
+    "Action",
+  ];
+
+  const handleMenuClick = (e) => {
+    const value = e.target.value;
+    setSelectedColumns((prev) =>
+      prev.includes(value)
+        ? prev.filter((col) => col !== value)
+        : [...prev, value]
+    );
+  };
   // Function to open the add modal
   const handleOpenAdd = () => setOpenAdd(true);
   // Function to close the add modal
@@ -531,6 +163,14 @@ function ClaimsList() {
     const year = d.getFullYear();
     return `${year}-${month}-${day}`;
   };
+  const lastYear = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const year = d.getFullYear() - 1;
+    return `${year}-${month}-${day}`;
+  };
 
   // Function to clear all filters
   const handleClear = () => {
@@ -554,9 +194,14 @@ function ClaimsList() {
         providerIds: filters.selectedProvider,
         serviceIds: filters.selectedServices,
         status: filters.selectedStatus,
-        startDate: formatDate(filters.startDate),
-        endDate: formatDate(filters.endDate),
+        startDate: filters.startDate
+          ? formatDate(filters.startDate)
+          : lastYear(new Date()),
+        endDate: filters.endDate
+          ? formatDate(filters.endDate)
+          : formatDate(new Date()),
         facilityIds: filters.selectedFacility,
+        patientName: filters.searchQuery,
       })
     );
     setPopoverOpen(false); // Close the popover after fetching data
@@ -571,7 +216,16 @@ function ClaimsList() {
     };
     return <div className="custom-tag">{truncateText(label, 10)}</div>;
   };
-
+  //handle search
+  const handleSearch = (value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      searchQuery: value,
+    }));
+  };
+  useEffect(() => {
+    fetchData(); // check this use effect make unwanted re renders /try to make it simple one /efficent method
+  }, [filters.searchQuery]);
   // Filter popover content
   const FilterPopover = (
     <div style={{ display: "flex", gap: "16px" }}>
@@ -646,13 +300,13 @@ function ClaimsList() {
       <DatePicker
         className="custom-select"
         format="MM-DD-YYYY"
-        onChange={(date, dateString) => handleDateChange("startDate", date)}
+        onChange={(date) => handleDateChange("startDate", date)}
         value={filters.startDate}
       />
       <DatePicker
         className="custom-select"
         format="MM-DD-YYYY"
-        onChange={(date, dateString) => handleDateChange("endDate", date)}
+        onChange={(date) => handleDateChange("endDate", date)}
         value={filters.endDate}
       />
       <Button
@@ -676,41 +330,18 @@ function ClaimsList() {
   );
 
   // Dropdown menu items for sorting options
-  const Ditems = [
-    {
-      label: (
-        <span>
-          <input type="checkbox" className="custom-checkbox" />
-          Location
-        </span>
-      ),
-      key: "1",
-    },
-    {
-      label: (
-        <span>
-          <input type="checkbox" className="custom-checkbox" /> Patient
-        </span>
-      ),
-      key: "2",
-    },
-    {
-      label: (
-        <span>
-          <input type="checkbox" className="custom-checkbox" /> Billed amount
-        </span>
-      ),
-      key: "3",
-    },
-    {
-      label: (
-        <span>
-          <input type="checkbox" className="custom-checkbox" /> Ins amount
-        </span>
-      ),
-      key: "4",
-    },
-  ];
+  const Ditems = columns.map((column) => ({
+    key: column,
+    label: (
+      <Checkbox
+        checked={selectedColumns.includes(column)}
+        onChange={handleMenuClick}
+        value={column}
+      >
+        {column}
+      </Checkbox>
+    ),
+  }));
 
   return (
     <div>
@@ -758,7 +389,11 @@ function ClaimsList() {
           </div>
         </div>
         <div className="search-bar flex-space-between">
-          <Search style={{ width: "320px" }} placeholder="Search ..." />
+          <Search
+            style={{ width: "320px" }}
+            placeholder="Search ..."
+            onSearch={handleSearch}
+          />
           <Popover
             placement="bottomRight"
             content={FilterPopover}
@@ -771,7 +406,6 @@ function ClaimsList() {
               <span className="bold">Filters</span>
             </Button>
           </Popover>
-
           <Dropdown menu={{ items: Ditems }}>
             <Button type="primary" ghost size="medium" className="flex-center">
               <FilterListIcon
@@ -800,8 +434,10 @@ function ClaimsList() {
           selectedStatus={filters.selectedStatus}
           startDate={filters.startDate}
           endDate={filters.endDate}
+          selectedColumns={selectedColumns}
         />
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }

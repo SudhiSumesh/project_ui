@@ -7,6 +7,7 @@ import "./style.css";
 import LastPanel from "../../Components/LastPanel";
 import MainHeader from "../../Components/MainHeader";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 const { Header,  } = Layout;
 const ClaimsDetail = () => {
   const navigate=useNavigate()
@@ -104,6 +105,7 @@ const ClaimsDetail = () => {
           </div>
         </div>
       </Layout>
+      <Toaster position="top-right" reverseOrder={false} />
     </>
   );
 };

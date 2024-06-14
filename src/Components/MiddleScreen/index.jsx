@@ -3,9 +3,8 @@ import { Button, ConfigProvider, Layout, Modal, Table, Input } from "antd";
 import MiddleScreenTabs from "./MiddleScreenTabs";
 import AddIcon from "@mui/icons-material/Add";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import CloseIcon from "@mui/icons-material/Close";
-import "./style.css";
 import Edit from "@mui/icons-material/Edit";
+import "./style.css";
 const { Content } = Layout;
 
 const MiddleScreen = () => {

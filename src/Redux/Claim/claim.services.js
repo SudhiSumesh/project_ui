@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Apis } from "../APIs";
+import httpCommon from "../http/http.common";
 class ClaimServices {
   getClaimsData(data) {
     return axios.get(
@@ -8,10 +9,15 @@ class ClaimServices {
         data.limit
       }&clinicId=${data.clinicId}&providerIds=${
         data.providerIds ? data.providerIds : ""
-      }&serviceIds=${data.serviceIds}&facilityIds=${data.facilityIds}&status=${
-        data.status
-      }&startDate=${data.startDate}&endDate=${data.endDate}`
+      }&serviceIds=${data.serviceIds ?? null}&facilityIds=${data.facilityIds ?? null}&status=${
+        data.status ?? null
+      }&startDate=${data.startDate}&endDate=${data.endDate}&patientName=${
+        data.patientName??""
+      }`
     );
+  }
+  deleteClaimApi(claimId) {
+    return axios.delete(`${Apis.claimDeleteApi}/${claimId}`);
   }
 }
 

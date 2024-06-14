@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getClaimsData } from "./claim.actions";
+import { deleteClaim, getClaimsData } from "./claim.actions";
 
 const INITIAL_STATE = {
   claimData: {},
+  claimDeleteResponse: null,
 };
 
 const ClaimSlice = createSlice({
@@ -11,6 +12,9 @@ const ClaimSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getClaimsData.fulfilled, (state, action) => {
       state.claimData = action.payload;
+    });
+    builder.addCase(deleteClaim.fulfilled, (state, action) => {
+      state.claimDeleteResponse  = action.payload;
     });
   },
 });

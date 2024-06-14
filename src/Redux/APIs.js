@@ -283,5 +283,6 @@ export const Apis = {
   //CLAIMS NEW====
 
   //claims-management api
-  getClaimsDataApi: "http://localhost:3000/api/v1//getClaimsList/",
+  getClaimsDataApi: "http://localhost:3000/api/v1/getClaimsList/",
+  claimDeleteApi: "http://localhost:3000/api/v1/deleteClaim",
 };
