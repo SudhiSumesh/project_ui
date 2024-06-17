@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ConfigProvider, Table, Tooltip } from "antd";
+import { ConfigProvider, Modal, Table, Tooltip } from "antd";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,6 +8,9 @@ import "./style.css";
 import { getClaimsData, deleteClaim } from "../../Redux/Claim/claim.actions";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Form from "../Form";
+import ClaimEditForm from "../ClaimEditForm";
+import { setSelectedClaimRecord } from "../../Redux/Claim/claim.reducer";
 
 const ClaimsTable = ({
   start,
@@ -22,6 +25,9 @@ const ClaimsTable = ({
 }) => {
   const [selectionType, setSelectionType] = useState("checkbox");
   const [data, setData] = useState([]);
+  // State to manage modal visibility
+  const [openAdd, setOpenAdd] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { claimData, claimDeleteResponse } = useSelector(
@@ -50,7 +56,14 @@ const ClaimsTable = ({
     if (text?.length <= length) return text;
     return text?.slice(0, length) + "...";
   };
-
+  // Function to open the add modal
+  const handleOpenAdd = (record) => {
+    setOpenAdd(true);
+    console.log(record);
+    setSelectedRecord(record);
+  };
+  // Function to close the add modal
+  const closeAdd = () => setOpenAdd(false);
   //table columns
   const columns = [
     {
@@ -115,22 +128,30 @@ const ClaimsTable = ({
     {
       title: "Charges",
       dataIndex: "charges",
-      render: (text) => <span className="table-item">{text}</span>,
+      render: (text) => (
+        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+      ),
     },
     {
       title: "Payments",
       dataIndex: "payments",
-      render: (text) => <span className="table-item">{text}</span>,
+      render: (text) => (
+        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+      ),
     },
     {
       title: "Ins Bal",
       dataIndex: "insBal",
-      render: (text) => <span className="table-item">{text}</span>,
+      render: (text) => (
+        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+      ),
     },
     {
       title: "Pat Bal",
       dataIndex: "patBal",
-      render: (text) => <span className="table-item">{text}</span>,
+      render: (text) => (
+        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+      ),
     },
     {
       title: "Claim Status",
@@ -155,9 +176,11 @@ const ClaimsTable = ({
         >
           <ViewListIcon
             fontSize="small"
-            onClick={() => navigate("/claimslist/claims-details")}
+            onClick={() =>{
+              dispatch(setSelectedClaimRecord(record));
+              navigate("/claimslist/claims-details")}}
           ></ViewListIcon>
-          <EditIcon fontSize="small" />
+          <EditIcon fontSize="small" onClick={() => handleOpenAdd(record)} />
           <DeleteIcon
             fontSize="small"
             onClick={() => handleDelete(record.claimId)}
@@ -233,18 +256,25 @@ const ClaimsTable = ({
         claimData.result.providerSummary.map((item, index) => ({
           key: index + 1,
           claimId: item.claimId,
+          patientId: item.ipatientId,
+          providerId: item.iproviderId,
+          primaryPayerId: item.payorId,
+          facilityId: item.facilityId,
+          serviceId: item.serviceId,
           patientName: item.spatientName ?? "",
           // FirstName: "Jenny",
+          visitId: item.visitId,
           mrn: item.smrn ?? "",
           dos: formatDate(item.sdos) ?? "",
           provider: item.sproviderName ?? "",
           payor: item.payorName ?? "",
           facility: item.facilityName ?? "",
           service: item.serviceName ?? "",
-          charges: `$${item.dcharges}` ?? "$ 0.00",
-          payments: `$${item.dpayments}` ?? "$ 0.00",
-          insBal: ` $${item.insuranceBalance}.00` ?? "$ 0.00",
-          patBal: `$${item.patientBalance}.00` ?? "$ 0.00",
+          charges: `${item.dcharges}` ?? 0,
+          payments: `${item.dpayments}` ?? 0,
+          insBal: ` ${item.insuranceBalance}` ?? 0,
+          patBal: `${item.patientBalance}` ?? 0,
+          statusId: item.claimStatus,
           claimStatus: item.claimStatus
             ? statuses[item.claimStatus - 1].name
             : "",
@@ -254,8 +284,12 @@ const ClaimsTable = ({
   }, [claimData]);
 
   useEffect(() => {
-    if (claimDeleteResponse) {
-      toast.success("Claim deleted successfully");
+    if (
+      claimDeleteResponse &&
+      claimDeleteResponse.responseCode == 0 &&
+      claimDeleteResponse.data
+    ) {
+      toast.success(claimDeleteResponse.data?.message);
       fetchData(); // Call fetchData to refresh data after deletion
 
       //Here need to remove the value of claimDeleteResponse is needed claimDeleteResponse=null/with a reducer function
@@ -274,6 +308,16 @@ const ClaimsTable = ({
 
   return (
     <div>
+      <Modal
+        title=""
+        open={openAdd}
+        onOk={closeAdd}
+        footer={null}
+        closable={false}
+        width={800}
+      >
+        <ClaimEditForm closeAdd={closeAdd} selectedRecord={selectedRecord} />
+      </Modal>
       <ConfigProvider
         theme={{
           token: {

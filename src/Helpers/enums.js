@@ -6,7 +6,6 @@ export const providerList = [
     fullName: "Vinit Lal",
     middleName: " ",
     lastName: "Lal",
-  
   },
   {
     clinicId: 93422,
@@ -15,7 +14,6 @@ export const providerList = [
     fullName: "Randall Gale",
     lastName: "Gale",
     middleName: " Glenn",
-  
   },
   {
     clinicId: 93422,
@@ -24,7 +22,6 @@ export const providerList = [
     fullName: "Kelsey Reekie",
     middleName: " ",
     lastName: "Reekie",
-  
   },
   {
     clinicId: 93422,
@@ -33,7 +30,6 @@ export const providerList = [
     fullName: "Mesha Dancer",
     middleName: " ",
     lastName: "Dancer",
-  
   },
   {
     clinicId: 93422,
@@ -42,7 +38,6 @@ export const providerList = [
     fullName: "George Jacob",
     middleName: " ",
     lastName: "Jacob",
-  
   },
   {
     clinicId: 93422,
@@ -51,7 +46,6 @@ export const providerList = [
     fullName: "Savannah Doughty",
     middleName: " ",
     lastName: "Doughty",
-  
   },
 ];
 
@@ -382,21 +376,48 @@ export const FacilityList = [
   },
 ];
 
-  //status
- export const statuses = [
-    // { name: "All Statuses", value: 0 },
-    { name: "Visit Completed", value: 1 },
-    { name: "Created", value: 2 },
-    { name: "Filed", value: 3 },
-    { name: "Rejected", value: 4 },
-    { name: "Denied", value: 5 },
-    { name: "Sec Ready", value: 6 },
-    { name: "Sec Pending", value: 7 },
-    { name: "Ter Ready", value: 8 },
-    { name: "Ter Pending", value: 9 },
-    { name: "Pat Balance", value: 10 },
-    { name: "Closed", value: 11 },
-    { name: "Clar Opened", value: 12 },
-    { name: "Clar Closed", value: 13 },
-    { name: "On Hold", value: 14 },
-  ];
+//status
+export const statuses = [
+  // { name: "All Statuses", value: 0 },
+  { name: "Visit Completed", value: 1 },
+  { name: "Created", value: 2 },
+  { name: "Filed", value: 3 },
+  { name: "Rejected", value: 4 },
+  { name: "Denied", value: 5 },
+  { name: "Sec Ready", value: 6 },
+  { name: "Sec Pending", value: 7 },
+  { name: "Ter Ready", value: 8 },
+  { name: "Ter Pending", value: 9 },
+  { name: "Pat Balance", value: 10 },
+  { name: "Closed", value: 11 },
+  { name: "Clar Opened", value: 12 },
+  { name: "Clar Closed", value: 13 },
+  { name: "On Hold", value: 14 },
+];
+
+export const payerList = [
+  {
+    payerName: "Blue Cross Medicare Advantage",
+    payerId: 645,
+  },
+  {
+    payerName: "BCBSTX BLUE MEDICARE ADVANTAGE PPO",
+    payerId: 1117,
+  },
+  // {
+  //   payerName: "",
+  //   payerId: 0,
+  // },
+  {
+    payerName: "PREFERRED CARE PARTNERS MCR",
+    payerId: 820,
+  },
+  {
+    payerName: "AETNA CHOICE POS II",
+    payerId: 1114,
+  },
+  {
+    payerName: "TEST BCBS",
+    payerId: 960,
+  },
+];

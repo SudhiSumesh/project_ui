@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Button, Layout, Menu, theme, Dropdown, Space, Breadcrumb } from "antd";
+import { Button, Layout, Breadcrumb } from "antd";
 import SideBar from "../../Components/Sidebar";
 import MiddleScreen from "../../Components/MiddleScreen";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import "./style.css";
 import LastPanel from "../../Components/LastPanel";
 import MainHeader from "../../Components/MainHeader";
 import { useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import "./style.css";
 const { Header,  } = Layout;
 const ClaimsDetail = () => {
   const navigate=useNavigate()

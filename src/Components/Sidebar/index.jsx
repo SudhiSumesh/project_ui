@@ -4,6 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button, Layout, Dropdown, Space } from "antd";
 import "./style.css";
+import { useSelector } from "react-redux";
 const items = [
   {
     label: "1st menu item",
@@ -33,7 +34,7 @@ const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState(false);
   const { Sider } = Layout;
-
+  const { selectedClaimRecord } = useSelector((state) => state.claim);
   const sideBarContent = (
     <div
       className="sideBarContent "
@@ -72,7 +73,8 @@ const SideBar = () => {
           <span
             style={{ fontSize: "14px", fontWeight: "700", color: "#8792A2" }}
           >
-            Amie Patient (17/08/2003)
+            {selectedClaimRecord?.patientName || ""} (
+            {selectedClaimRecord?.dos || ""})
           </span>
           <a href="#">Edit</a>
         </div>
@@ -84,7 +86,7 @@ const SideBar = () => {
             color: "#8792A2",
           }}
         >
-          <span>shwarts, BMD</span>
+          <span>{selectedClaimRecord?.claimStatus || ""}</span>
           <span>BCBS OF TX</span>
         </div>
       </div>

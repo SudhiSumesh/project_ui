@@ -9,6 +9,7 @@
 // }
 
 const config = {
+  claimBaseUrl: "http://localhost:3000/api/v1/",
   baseUrl: "https://staging.api.trillium.health",
   baseUrl2: "https://stagingnew.trillium.health",
   dashboardUrl: "https://stagingnew.trillium.health",

@@ -35,9 +35,9 @@ const LoginForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-        let a = { name: values.clinic_name, id: values.clinicId };
-        localStorage.setItem("clinic_data", JSON.stringify(a));
-        localStorage.setItem("clinic_id", values.clinicId);
+      let a = { name: values.clinic_name, id: values.clinicId };
+      localStorage.setItem("clinic_data", JSON.stringify(a));
+      localStorage.setItem("clinic_id", values.clinicId);
       dispatch(
         clickLogin({
           clinicId: values.clinicId,
@@ -57,22 +57,23 @@ const LoginForm = () => {
   useEffect(() => {
     if (loginResponse && loginResponse.data) {
       const { data } = loginResponse;
+      console.log(loginResponse);
+      console.log(data);
       let responseCode = loginResponse?.responseCode;
       if (data && responseCode === 0) {
-        localStorage.setItem("access_token", data?.accessToken);
+        localStorage.setItem("access_token", data?.access_token);
 
-        const roles = data?.roles;
-        const isAdmin = roles?.some((role) => role.roleId === 2);
+        // const roles = data?.roles;
+        // const isAdmin = roles?.some((role) => role.roleId === 2);
         // set details in to local storage
-        localStorage.setItem("isAdministratorAccess", isAdmin);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        localStorage.setItem("userId", data.userId);
-        localStorage.setItem("roleId", data.roles[0].roleId);
-        localStorage.setItem("role", data.roles[0]);
+        // localStorage.setItem("isAdministratorAccess", isAdmin);
+        localStorage.setItem("refreshToken", data.refresh_token);
+
         // api calls
-        dispatch(getuserData({ id: data.userId }));
+        // dispatch(getuserData({ id: data.userId }));
         dispatch(LoginResponse(null));
-        dispatch(loginInfo());
+        // dispatch(loginInfo());
+        navigate("/claimslist");
       }
       if (responseCode === 117) {
         setloginError("Login failed. Please enter valid credentials");
@@ -85,50 +86,50 @@ const LoginForm = () => {
     }
   }, [loginResponse]);
 
-  useEffect(() => {
-    if (Status === true) {
-      if (userdata && userdata.data) {
-        const { data } = userdata;
-        // let userx = data.memoryCash.userList ? data.memoryCash.userList : []
-        let userx = [...(data.memoryCash.userList || [])];
+  // useEffect(() => {
+  //   if (Status === true) {
+  //     if (userdata && userdata.data) {
+  //       const { data } = userdata;
+  //       // let userx = data.memoryCash.userList ? data.memoryCash.userList : []
+  //       let userx = [...(data.memoryCash.userList || [])];
 
-        userx.push({
-          userId: 0,
-          roleId: 101,
-          roleName: "INTERNAL_SUPPORT",
-          firstName: "Internal",
-          middleName: "",
-          lastName: "Support",
-          fullName: "Internal Support",
-          clinicId: 0,
-          clinicName: "",
-        });
-        let memoryCash = {
-          appointmentType: data.memoryCash.appointmentType
-            ? data.memoryCash.appointmentType
-            : [],
-          locations: data.memoryCash.locations ? data.memoryCash.locations : [],
-          permissionEntity: data.memoryCash.permissionEntity
-            ? data.memoryCash.permissionEntity
-            : [],
-          provider: data.memoryCash.provider ? data.memoryCash.provider : [],
-          userList: userx,
-          posList: data.memoryCash.posList,
-          tosList: data.memoryCash.tosList,
-        };
-        localStorage.setItem("memoryCash", JSON.stringify(memoryCash));
-        localStorage.setItem("user_data", JSON.stringify(data.loginInfo));
-      }
-    }
-  }, [userdata]);
+  //       userx.push({
+  //         userId: 0,
+  //         roleId: 101,
+  //         roleName: "INTERNAL_SUPPORT",
+  //         firstName: "Internal",
+  //         middleName: "",
+  //         lastName: "Support",
+  //         fullName: "Internal Support",
+  //         clinicId: 0,
+  //         clinicName: "",
+  //       });
+  //       let memoryCash = {
+  //         appointmentType: data.memoryCash.appointmentType
+  //           ? data.memoryCash.appointmentType
+  //           : [],
+  //         locations: data.memoryCash.locations ? data.memoryCash.locations : [],
+  //         permissionEntity: data.memoryCash.permissionEntity
+  //           ? data.memoryCash.permissionEntity
+  //           : [],
+  //         provider: data.memoryCash.provider ? data.memoryCash.provider : [],
+  //         userList: userx,
+  //         posList: data.memoryCash.posList,
+  //         tosList: data.memoryCash.tosList,
+  //       };
+  //       localStorage.setItem("memoryCash", JSON.stringify(memoryCash));
+  //       localStorage.setItem("user_data", JSON.stringify(data.loginInfo));
+  //     }
+  //   }
+  // }, [userdata]);
 
-  useEffect(() => {
-    if (cache?.data) {
-      let Response = cache.data;
-      localStorage.setItem("cache", JSON.stringify(Response));
-      navigate("/claimslist");
-    }
-  }, [cache]);
+  // useEffect(() => {
+  //   if (cache?.data) {
+  //     let Response = cache.data;
+  //     localStorage.setItem("cache", JSON.stringify(Response));
+  //     navigate("/claimslist");
+  //   }
+  // }, [cache]);
   return (
     <div className="clinicLogin">
       <header className="clinicLogin__header">
