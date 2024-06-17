@@ -1,68 +1,88 @@
-import React, { useState } from "react";
-import { Button, ConfigProvider, Descriptions, Input, Modal, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  ConfigProvider,
+  Descriptions,
+  Input,
+  Modal,
+  Table,
+} from "antd";
 import "./style.css";
-
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getClaimsDiagnosis,
+  editClaimsDiagnosis,
+} from "../../../../../Redux/Diagnosis/diagnosis.actions";
+import toast, { Toaster } from "react-hot-toast";
 function Diagnosis() {
-  const [edit, setEdit] = useState(false);
-  const [expand, setExpand] = useState(false);
+  const dispatch = useDispatch();
+  const { selectedClaimRecord } = useSelector((state) => state.claim);
+  const { diagnosisData, editDiagnosisRes } = useSelector(
+    (state) => state.diagnosis
+  );
+  // State to manage input values
+  const [inputValues, setInputValues] = useState([]);
   const [openAdd, setOpenAdd] = useState(false);
+
+  //Effect for fetch diagnosis
+  useEffect(() => {
+    dispatch(getClaimsDiagnosis(selectedClaimRecord?.visitId || null));
+  }, []);
+  //Initialize input values when diagnosisData changes
+  useEffect(() => {
+    if (diagnosisData?.visitDiagnosisDtoList) {
+      setInputValues(
+        diagnosisData.visitDiagnosisDtoList.map((item) => ({
+          dx1: item.dx1.icdCode,
+          dx2: item.dx2.icdCode,
+          dx3: item.dx3.icdCode,
+          dx4: item.dx4.icdCode,
+          dx5: item.dx5.icdCode,
+          dx6: item.dx6.icdCode,
+          dx7: item.dx7.icdCode,
+          dx8: item.dx8.icdCode,
+          diagnosisId: item.visitDiagnosisId,
+        }))
+      );
+    }
+  }, [diagnosisData]);
+  useEffect(() => {
+    if (editDiagnosisRes && editDiagnosisRes.responseCode === 0) {
+      toast.success("Updated successfully");
+    }
+  }, [editDiagnosisRes]);
   const handleOpenAdd = () => {
     setOpenAdd(true);
   };
-
   const closeAdd = () => {
     setOpenAdd(false);
   };
-  const collapsedItems = [
-    { key: "1", value: `DX1: E11.51` },
-    { key: "2", value: "DX2: I10" },
-    { key: "3", value: "DX3:E23.2" },
-  ];
 
-  const columns = [
-    {
-      title: "Full Name",
-      width: 100,
-      dataIndex: "name",
-      fixed: "left",
-    },
-    {
-      title: "Age",
-      width: 100,
-      dataIndex: "age",
-    },
-    {
-      title: "Column 1",
-      dataIndex: "address",
-      fixed: "left",
-    },
-    {
-      title: "Column 2",
-      dataIndex: "address",
-    },
-  ];
+  const handleInputChange = (index, field, value) => {
+    const updatedValues = [...inputValues];
+    updatedValues[index][field] = value;
+    setInputValues(updatedValues);
+  };
 
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York Park",
-    },
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York Park",
-    },
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York Park",
-    },
-  ];
+  const handleSave = () => {
+    // Add your save logic here
+    inputValues.map((item) =>
+      dispatch(
+        editClaimsDiagnosis({
+          icdCodeOne: item.dx1,
+          icdCodeTwo: item.dx2,
+          icdCodeThree: item.dx3,
+          icdCodeFour: item.dx4,
+          icdCodeFive: item.dx5,
+          icdCodeSix: item.dx6,
+          icdCodeSeven: item.dx7,
+          icdCodeEight: item.dx8,
+          diagnosisId: item.diagnosisId,
+        })
+      )
+    );
+  };
 
   return (
     <div>
@@ -73,7 +93,7 @@ function Diagnosis() {
         closable={false}
         width={700}
         footer={null}
-        className="custom-modal"
+        className="diagnosis-modal"
       >
         <ConfigProvider
           theme={{
@@ -90,45 +110,73 @@ function Diagnosis() {
             },
           }}
         >
-          <div className="add-charges-modal">
-            <div className="modal-header">
+          <div className="diagnosis-modal-container">
+            <div className="diagnosis-modal-header">
               <div className="heading-text">Diagnosis</div>
               <div className="modal-btns">
                 <Button size="" ghost onClick={() => closeAdd()}>
                   Cancel
                 </Button>
-                <Button size="">Save</Button>
+                <Button size="" onClick={handleSave}>
+                  Save
+                </Button>
               </div>
             </div>
-            <div className="modal-controls">
-              <div className="modal-controll-btns-left">
-                <Input
-             
-                  ghost
-                >
-                  {/* E11.51 */}
-                </Input>
-                <Button icon={<PlusOutlined />} ghost>
-                  DX2
-                </Button>
-                <Button icon={<PlusOutlined />} ghost>
-                  DX3
-                </Button>
-                <Button icon={<PlusOutlined />} ghost>
-                  DX4
-                </Button>
-              </div>
-              {/* <Input
-              placeholder="Search"
-              prefix={<SearchOutlined />}
-              style={{ width: 200 }}
-            /> */}
-              <div>
-                <Button shape="" ghost icon={<SearchOutlined />} />
-                <Button shape="" ghost icon={<PlusOutlined />} />
-              </div>
+            <div className="diagnosis-modal-controls">
+              {inputValues?.map((item, index) => (
+                <div className="d-modal-controll" key={index}>
+                  <div className="diagnosis-edit-container">
+                    <input
+                      className="diagnosis-edit-input"
+                      placeholder="DX1"
+                      value={item.dx1}
+                      onChange={(e) =>
+                        handleInputChange(index, "dx1", e.target.value)
+                      }
+                    />
+                    {<PlusOutlined style={{ color: "#139696" }} />}
+                  </div>
+
+                  <div className="diagnosis-edit-container">
+                    <input
+                      className="diagnosis-edit-input"
+                      placeholder="DX2"
+                      value={item.dx2}
+                      onChange={(e) =>
+                        handleInputChange(index, "dx2", e.target.value)
+                      }
+                    />
+                    {<PlusOutlined style={{ color: "#139696" }} />}
+                  </div>
+                  <div className="diagnosis-edit-container">
+                    <input
+                      className="diagnosis-edit-input"
+                      placeholder="DX3"
+                      value={item.dx3}
+                      onChange={(e) =>
+                        handleInputChange(index, "dx3", e.target.value)
+                      }
+                    />
+                    {<PlusOutlined style={{ color: "#139696" }} />}
+                  </div>
+                  <div className="diagnosis-edit-container">
+                    <input
+                      className="diagnosis-edit-input"
+                      placeholder="DX4"
+                      value={item.dx4}
+                      onChange={(e) =>
+                        handleInputChange(index, "dx4", e.target.value)
+                      }
+                    />
+                    {<PlusOutlined style={{ color: "#139696" }} />}
+                  </div>
+                </div>
+              ))}
             </div>
-         
+            <div className="container-btn">
+              <Button shape="" ghost icon={<SearchOutlined />} />
+              <Button shape="" ghost icon={<PlusOutlined />} />
+            </div>
           </div>
         </ConfigProvider>
       </Modal>
@@ -164,32 +212,30 @@ function Diagnosis() {
             Edit
           </Button>
         </div>
-
-        <Descriptions layout="vertical">
-          {collapsedItems.map((item) => (
-            <Descriptions.Item key={item.key}>
+        <div layout="vertical">
+          <Descriptions></Descriptions>
+          {diagnosisData?.visitDiagnosisDtoList?.map((item, index) => (
+            <div key={index}>
               <div
                 className="semibold"
-                style={{ color: "#4F566B", fontSize: "16px" }}
+                style={{
+                  color: "#4F566B",
+                  fontSize: "16px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  paddingBlock: ".5rem",
+                }}
               >
-                {item.value}
+                <div>{` DX1 :  ${item.dx1.icdCode}`}</div>
+                <div>{`DX2 : ${item.dx2.icdCode}`}</div>
+                <div>{`DX3 : ${item.dx3.icdCode}`}</div>
+                {/* {`DX1: ${item.dx1.icdCode}, DX2: ${item.dx2.icdCode}, DX3: ${item.dx3.icdCode}`} */}
               </div>
-            </Descriptions.Item>
+            </div>
           ))}
-        </Descriptions>
-
-        {expand && (
-          <div>
-            <Table
-              className="custom-table"
-              columns={columns}
-              dataSource={data}
-              pagination={false}
-              bordered
-            />
-          </div>
-        )}
+        </div>
       </div>
+      {/* <Toaster/> */}
     </div>
   );
 }

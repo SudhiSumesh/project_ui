@@ -1,0 +1,25 @@
+.cpt-edt {
+  display: flex;
+  flex-direction: column;
+  /* margin-top: .5rem; */
+}
+.cpt-edit-container {
+  display: flex;
+  border: none;
+  border-bottom: 1px solid #139696;
+}
+.cpt-edit-container .cpt-input {
+  width: 100%;
+  border: none;
+}
+.cpt-input:focus {
+  outline: none; /* Removes the default outline */
+  border: none; /* Ensures no border is shown */
+  box-shadow: none; /* Removes any box shadow that might be used to indicate focus */
+}
+
+.discription {
+    padding-top: .5rem;
+  font-size: 16px;
+  /* margin-block: .2rem; */
+}
