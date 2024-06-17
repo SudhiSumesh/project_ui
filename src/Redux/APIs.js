@@ -281,8 +281,24 @@ export const Apis = {
     "trillium-internal-service/v1/common/external/mapping/",
 
   //CLAIMS NEW====
+  //login Api
+  claimsLoginApi: "http://localhost:3006/api/v1/auth/login",
 
   //claims-management api
   getClaimsDataApi: "http://localhost:3000/api/v1/getClaimsList/",
   claimDeleteApi: "http://localhost:3000/api/v1/deleteClaim",
+  createClaimApi: "http://localhost:3000/api/v1/addClaim",
+  updateClaimApi: "http://localhost:3000/api/v1/updateClaim",
+
+  //claim-diagnosis-Api
+  getClaimsDiagnosisDataApi: "http://localhost:3002/api/v1/getDiagnosis",
+  updateDiagnosisApi: "http://localhost:3002/api/v1/editDiagnosis",
+  icdSearchApi: "http://localhost:3002/api/v1/icd-search",
+
+  //claim-charges-api
+  getChargesApi: "http://localhost:3001/api/v1/getCharges",
+  addNewChargesApi: "http://localhost:3001/api/v1/addNewCharges",
+  editChargesApi: "http://localhost:3001/api/v1/editCharges",
+  deleteChargesApi: "http://localhost:3001/api/v1/deleteCharges",
+  searchCptCodeApi: "http://localhost:3001/api/v1/searchCptCode",
 };

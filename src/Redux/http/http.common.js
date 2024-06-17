@@ -1,12 +1,12 @@
 import axios from "axios";
 import environment from "../../environments/environment";
 
-const { baseUrl } = environment;
+// const { claimBaseUrl } = environment;
 
 const httpCommon = axios.create({
-  baseURL: baseUrl,
+  // baseURL:,
   headers: {
-    "application-id": 2,
+    // "application-id": 2,
     "Content-Type": "application/json",
   },
 });

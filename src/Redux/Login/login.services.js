@@ -4,7 +4,7 @@ import htttpLogin from '../http/htttp.login'
 
 class LoginService {
   login(data) {
-    return htttpLogin.post(`${Apis.Login_login}`, data)
+    return htttpLogin.post(`${Apis.claimsLoginApi}`, data);
   }
   userData(data) {
     return httpCommon.get(`${Apis.Login_userData}/${data.id}`)

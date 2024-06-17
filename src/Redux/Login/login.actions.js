@@ -8,7 +8,7 @@ export const clickLogin = createAsyncThunk(
     try {
       const res = await loginServices.login(credentials);
       // console.log(res.data, 'login actions')
-      if (res.data?.error || res.data?.responseCode == 117) {
+      if (res.data?.error || res.data?.responseCode == 1) {
         console.log(res.data.error?.message);
         toast.error("Invalid Credentials");
       }
