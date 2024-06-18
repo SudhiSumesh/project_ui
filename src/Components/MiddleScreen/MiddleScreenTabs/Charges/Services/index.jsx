@@ -19,7 +19,6 @@ function Services() {
   const [editTableData, setEditTableData] = useState([]);
 
   const dispatch = useDispatch();
-  const { selectedClaimRecord } = useSelector((state) => state.claim);
   const { ChargesDataRes, updateChargeRes, deleteChargeRes, addChargesRes } =
     useSelector((state) => state.charges);
   //modal functions
@@ -81,18 +80,18 @@ function Services() {
       )
     );
     setOpenAdd(false);
-    dispatch(getClaimsCharges(selectedClaimRecord.claimId));
+    dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
   };
   // handle Add New Charges
   const handleAddNewCharges = (record) => {
     console.log(record, "record");
-    console.log(selectedClaimRecord, "selected record");
+    // console.log(JSON.parse(localStorage.getItem("selectedClaimRecord")), "selected record");
     dispatch(
       addNewCharges({
         clinicId: localStorage.getItem("clinic_id") ?? null,
-        claimId: selectedClaimRecord?.claimId,
-        visitId: selectedClaimRecord?.visitId,
-        patientId: selectedClaimRecord?.patientId,
+        claimId: JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId,
+        visitId: JSON.parse(localStorage.getItem("selectedClaimRecord"))?.visitId,
+        patientId: JSON.parse(localStorage.getItem("selectedClaimRecord"))?.patientId,
         // procedureCodeId,
         procedureCode: record?.cpt?.cptCode,
         unit: record?.No,
@@ -122,7 +121,7 @@ function Services() {
     setEditTableData(newData);
     if (procedureId) {
       dispatch(deleteCharges(procedureId));
-      dispatch(getClaimsCharges(selectedClaimRecord.claimId));
+      dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
     } else {
       console.log("procedureId required");
     }
@@ -135,10 +134,10 @@ function Services() {
   }, [updateChargeRes]);
   //effect for fetch charges data
   useEffect(() => {
-    if (selectedClaimRecord?.claimId) {
-      dispatch(getClaimsCharges(selectedClaimRecord.claimId));
+    if (JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId) {
+      dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
     }
-  }, [selectedClaimRecord?.claimId, dispatch]);
+  }, [JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId, dispatch]);
   //effect for set data to state
   useEffect(() => {
     if (
@@ -188,7 +187,7 @@ function Services() {
   useEffect(() => {
     if (addChargesRes && addChargesRes.responseCode === 0) {
       toast.success("service Added successfully");
-       dispatch(getClaimsCharges(selectedClaimRecord.claimId));
+       dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
     }
   }, [addChargesRes]);
   //delete res effect

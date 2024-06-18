@@ -17,7 +17,6 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 function Diagnosis() {
   const dispatch = useDispatch();
-  const { selectedClaimRecord } = useSelector((state) => state.claim);
   const { diagnosisData, editDiagnosisRes } = useSelector(
     (state) => state.diagnosis
   );
@@ -27,7 +26,11 @@ function Diagnosis() {
 
   //Effect for fetch diagnosis
   useEffect(() => {
-    dispatch(getClaimsDiagnosis(selectedClaimRecord?.visitId || null));
+    dispatch(
+      getClaimsDiagnosis(
+        JSON.parse(localStorage.getItem("selectedClaimRecord"))?.visitId || null
+      )
+    );
   }, []);
   //Initialize input values when diagnosisData changes
   useEffect(() => {
@@ -50,6 +53,12 @@ function Diagnosis() {
   useEffect(() => {
     if (editDiagnosisRes && editDiagnosisRes.responseCode === 0) {
       toast.success("Updated successfully");
+        dispatch(
+          getClaimsDiagnosis(
+            JSON.parse(localStorage.getItem("selectedClaimRecord"))?.visitId ||
+              null
+          )
+        );
     }
   }, [editDiagnosisRes]);
   const handleOpenAdd = () => {

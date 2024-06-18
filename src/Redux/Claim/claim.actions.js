@@ -21,7 +21,7 @@ export const createNewClaim = createAsyncThunk(
       const res = await claimServices.createNewClaimsApi(data);
       return res.data;
     } catch (error) {
-      toast.error("Faild to add claim please try again");
+      // toast.error("Faild to add claim please try again");
       console.log(error);
     }
   }
@@ -33,7 +33,7 @@ export const editClaim = createAsyncThunk(
       const res = await claimServices.editClaimApi(data);
       return res.data;
     } catch (error) {
-      toast.error("Faild to edit claim please try again");
+      // toast.error("Faild to edit claim please try again");
       console.log(error);
     }
   }

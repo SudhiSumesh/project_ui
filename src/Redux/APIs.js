@@ -301,4 +301,18 @@ export const Apis = {
   editChargesApi: "http://localhost:3001/api/v1/editCharges",
   deleteChargesApi: "http://localhost:3001/api/v1/deleteCharges",
   searchCptCodeApi: "http://localhost:3001/api/v1/searchCptCode",
+
+  //claim-notes-api
+  getAllNotesApi: "http://localhost:3003/api/v1/getAllNotes",
+  addNewNotesApi: "http://localhost:3003/api/v1/addNote",
+  deleteNotesApi: "http://localhost:3003/api/v1/deleteNote",
+
+  // claim-files-api
+  getClaimFilesApi: "http://localhost:3004/api/v1/getFiles",
+  addNewFilesApi: "http://localhost:3004/api/v1/addFile",
+  deleteFilesApi: "http://localhost:3004/api/v1/deleteFile",
+
+  //Payment Api
+  getPaymentSummaryApi: "http://localhost:3005/api/v1/payment-summary",
+  getLedgerApi: "http://localhost:3005/api/v1/get-ledger",
 };

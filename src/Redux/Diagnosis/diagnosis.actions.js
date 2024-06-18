@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import diagnosisServices from "./diagnosis.services";
 import toast from "react-hot-toast";
+import diagnosisServices from "./diagnosis.services";
 
 export const getClaimsDiagnosis = createAsyncThunk(
   "claims/getClaimsDiagnosis ",
@@ -21,7 +21,7 @@ export const editClaimsDiagnosis = createAsyncThunk(
       const res = await diagnosisServices.EditDiagnosis(data);
       return res.data;
     } catch (error) {
-      toast.error("Faild to edit  diagnosis please try again");
+      // toast.error("Faild to edit  diagnosis please try again");
       console.log(error);
     }
   }
@@ -31,7 +31,7 @@ export const icdSearch = createAsyncThunk("claims/icdSearch ", async (data) => {
     const res = await diagnosisServices.getIcdeCode(data);
     return res.data;
   } catch (error) {
-    toast.error("Faild to get  icdCode please try again");
+    // toast.error("Faild to get  icdCode please try again");
     console.log(error);
   }
 });

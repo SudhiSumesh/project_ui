@@ -8,9 +8,10 @@ import MainHeader from "../../Components/MainHeader";
 import { useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import "./style.css";
-const { Header,  } = Layout;
+import { useSelector } from "react-redux";
+const { Header } = Layout;
 const ClaimsDetail = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <MainHeader />
@@ -32,17 +33,17 @@ const ClaimsDetail = () => {
                   type="primary"
                   size="small"
                   ghost
+                  onClick={() => navigate("/claimslist")}
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: ".4rem",
                   }}
-                >
+                  >
                   <KeyboardReturnIcon
                     fontSize="small"
                     style={{ marginRight: 2, fontSize: 18 }}
-                    onClick={() => navigate("/claimslist")}
                   />
                   Back
                 </Button>
@@ -52,7 +53,16 @@ const ClaimsDetail = () => {
                     {
                       title: (
                         <p style={{ color: "black", marginLeft: "1rem" }}>
-                          Jenny Andrews 10/10/1990
+                          {
+                            JSON.parse(
+                              localStorage.getItem("selectedClaimRecord")
+                            )?.patientName
+                          }{" "}
+                          {
+                            JSON.parse(
+                              localStorage.getItem("selectedClaimRecord")
+                            )?.dos
+                          }
                         </p>
                       ),
                     },
@@ -76,7 +86,13 @@ const ClaimsDetail = () => {
                           >
                             Ins Bal
                           </span>
-                          $0.00
+                          $
+                          {
+                            JSON.parse(
+                              localStorage.getItem("selectedClaimRecord")
+                            )?.insBal
+                          }
+                          .00
                         </p>
                       ),
                     },
@@ -88,7 +104,13 @@ const ClaimsDetail = () => {
                           >
                             Pat Bal
                           </span>
-                          $200
+                          $
+                          {
+                            JSON.parse(
+                              localStorage.getItem("selectedClaimRecord")
+                            )?.patBal
+                          }
+                          .00
                         </p>
                       ),
                     },

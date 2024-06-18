@@ -176,9 +176,16 @@ const ClaimsTable = ({
         >
           <ViewListIcon
             fontSize="small"
-            onClick={() =>{
-              dispatch(setSelectedClaimRecord(record));
-              navigate("/claimslist/claims-details")}}
+            onClick={() => {
+              localStorage.setItem(
+                "selectedClaimRecord",
+                JSON.stringify(record)
+              );
+              // dispatch(
+              //   setSelectedClaimRecord(localStorage.getItem("selectedClaimRecord"))
+              // );
+              navigate("/claimslist/claims-details");
+            }}
           ></ViewListIcon>
           <EditIcon fontSize="small" onClick={() => handleOpenAdd(record)} />
           <DeleteIcon

@@ -57,8 +57,8 @@ const LoginForm = () => {
   useEffect(() => {
     if (loginResponse && loginResponse.data) {
       const { data } = loginResponse;
-      console.log(loginResponse);
-      console.log(data);
+      // console.log(loginResponse);
+      // console.log(data);
       let responseCode = loginResponse?.responseCode;
       if (data && responseCode === 0) {
         localStorage.setItem("access_token", data?.access_token);

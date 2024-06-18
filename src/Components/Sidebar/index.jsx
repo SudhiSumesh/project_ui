@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Button, Layout, Dropdown, Space } from "antd";
 import "./style.css";
 import { useSelector } from "react-redux";
+import { setSelectedClaimRecord } from "../../Redux/Claim/claim.reducer";
 const items = [
   {
     label: "1st menu item",
@@ -34,7 +35,8 @@ const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState(false);
   const { Sider } = Layout;
-  const { selectedClaimRecord } = useSelector((state) => state.claim);
+  // const { } = useSelector((state) => state.claim);
+  // console.log(JSON.parse(localStorage.getItem("selectedClaimRecord")).key);
   const sideBarContent = (
     <div
       className="sideBarContent "
@@ -73,8 +75,8 @@ const SideBar = () => {
           <span
             style={{ fontSize: "14px", fontWeight: "700", color: "#8792A2" }}
           >
-            {selectedClaimRecord?.patientName || ""} (
-            {selectedClaimRecord?.dos || ""})
+            {JSON.parse(localStorage.getItem("selectedClaimRecord"))?.patientName || ""} (
+            {JSON.parse(localStorage.getItem("selectedClaimRecord"))?.dos || ""})
           </span>
           <a href="#">Edit</a>
         </div>
@@ -86,7 +88,7 @@ const SideBar = () => {
             color: "#8792A2",
           }}
         >
-          <span>{selectedClaimRecord?.claimStatus || ""}</span>
+          <span>{JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimStatus || ""}</span>
           <span>BCBS OF TX</span>
         </div>
       </div>
@@ -152,10 +154,7 @@ const SideBar = () => {
         </div>
         {/* use ref or something to uniquly identify each element do some changes in the sidebarComponent ,for change bgcolor on selecting each item  */}
         {sideBarContent}
-        {sideBarContent}
-        {sideBarContent}
-        {sideBarContent}
-        {sideBarContent}
+      
       </div>
     </Sider>
   );

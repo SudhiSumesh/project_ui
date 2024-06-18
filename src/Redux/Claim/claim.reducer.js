@@ -32,8 +32,14 @@ const ClaimSlice = createSlice({
     });
   },
   reducers: {
-    clearClaimEditResponse(state) {
-      state.claimUpdateResponse = null;
+    clearClaimEditResponse(state, action) {
+      state.claimUpdateResponse = action.payload || null;
+    },
+    clearClaimCreateResponse(state, action) {
+      state.claimCreateResponse = action.payload || null;
+    },
+    clearClaimDeleteResponse(state, action) {
+      state.claimDeleteResponse = action.payload || null;
     },
     setSelectedClaimRecord(state, action) {
       state.selectedClaimRecord = action.payload;
@@ -42,5 +48,6 @@ const ClaimSlice = createSlice({
 });
 
 const { reducer } = ClaimSlice;
-export const {clearClaimEditResponse,setSelectedClaimRecord} =ClaimSlice.actions
+export const { clearClaimEditResponse, setSelectedClaimRecord ,clearClaimCreateResponse,clearClaimDeleteResponse} =
+  ClaimSlice.actions;
 export default reducer;

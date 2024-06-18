@@ -1,6 +1,6 @@
 import { Apis } from '../APIs'
 import httpCommon from "../http/http.common";
-import htttpLogin from '../http/htttp.login'
+import htttpLogin from '../http/http.login'
 
 class LoginService {
   login(data) {

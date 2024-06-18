@@ -59,38 +59,6 @@ const items = [
     ),
     children: <Charts />,
   },
-  {
-    key: "4",
-    title: "Files",
-    label: (
-      <div
-        style={{
-          fontSize: "16px",
-          fontWeight: "500",
-          borderRadius: "20px",
-        }}
-      >
-        Files
-      </div>
-    ),
-    children: <Charges />,
-  },
-  {
-    key: "5",
-    title: "Messages",
-    label: (
-      <div
-        style={{
-          fontSize: "16px",
-          fontWeight: "500",
-          borderRadius: "20px",
-        }}
-      >
-        Messages
-      </div>
-    ),
-    children: <Charges />,
-  },
 ];
 
 const MiddleScreenTabs = () => {
