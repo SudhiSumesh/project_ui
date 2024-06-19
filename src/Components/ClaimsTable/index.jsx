@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ConfigProvider, Modal, Table, Tooltip } from "antd";
+import { ConfigProvider, Modal, Popconfirm, Table, Tooltip } from "antd";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import "./style.css";
 import { getClaimsData, deleteClaim } from "../../Redux/Claim/claim.actions";
 import { useNavigate } from "react-router-dom";
+import { statuses } from "../../Helpers/enums";
 import toast from "react-hot-toast";
-import Form from "../Form";
 import ClaimEditForm from "../ClaimEditForm";
-import { setSelectedClaimRecord } from "../../Redux/Claim/claim.reducer";
+import "./style.css";
+import { formatDate, lastYear } from "../../Helpers/dateFormater";
 
 const ClaimsTable = ({
   start,
@@ -19,38 +19,21 @@ const ClaimsTable = ({
   selectedProvider,
   selectedFacility,
   selectedStatus,
+  searchQuery,
   selectedColumns,
-  startDate,
-  endDate,
 }) => {
   const [selectionType, setSelectionType] = useState("checkbox");
+  // State to manage table data
   const [data, setData] = useState([]);
   // State to manage modal visibility
   const [openAdd, setOpenAdd] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState({});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { claimData, claimDeleteResponse } = useSelector(
     (state) => state.claim
   );
-  //status
-  const statuses = [
-    // { name: "All Statuses", value: 0 },
-    { name: "Visit Completed", value: 1 },
-    { name: "Created", value: 2 },
-    { name: "Filed", value: 3 },
-    { name: "Rejected", value: 4 },
-    { name: "Denied", value: 5 },
-    { name: "Sec Ready", value: 6 },
-    { name: "Sec Pending", value: 7 },
-    { name: "Ter Ready", value: 8 },
-    { name: "Ter Pending", value: 9 },
-    { name: "Pat Balance", value: 10 },
-    { name: "Closed", value: 11 },
-    { name: "Clar Opened", value: 12 },
-    { name: "Clar Closed", value: 13 },
-    { name: "On Hold", value: 14 },
-  ];
   //trim text
   const truncateText = (text, length) => {
     if (text?.length <= length) return text;
@@ -188,10 +171,16 @@ const ClaimsTable = ({
             }}
           ></ViewListIcon>
           <EditIcon fontSize="small" onClick={() => handleOpenAdd(record)} />
-          <DeleteIcon
-            fontSize="small"
-            onClick={() => handleDelete(record.claimId)}
-          />
+          <Popconfirm
+            title="Are you sure you want to delete this claim?"
+            onConfirm={() => handleDelete(record.claimId)}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+            placement="topRight"
+          >
+            <DeleteIcon fontSize="small" />
+          </Popconfirm>
         </span>
       ),
     },
@@ -211,24 +200,6 @@ const ClaimsTable = ({
     },
   };
 
-  const formatDate = (date) => {
-    if (!date) return null;
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
-
-  const lastYear = (date) => {
-    if (!date) return null;
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const year = d.getFullYear() - 1;
-    return `${year}-${month}-${day}`;
-  };
-
   // useCallback to fetch data
   const fetchData = useCallback(() => {
     dispatch(
@@ -242,6 +213,7 @@ const ClaimsTable = ({
         status: selectedStatus,
         startDate: lastYear(new Date()),
         endDate: formatDate(new Date()),
+        patientName: searchQuery,
       })
     );
   }, [
@@ -252,6 +224,7 @@ const ClaimsTable = ({
     selectedServices,
     selectedFacility,
     selectedStatus,
+    searchQuery,
   ]);
   useEffect(() => {
     fetchData();

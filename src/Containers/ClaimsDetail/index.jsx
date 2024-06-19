@@ -40,7 +40,7 @@ const ClaimsDetail = () => {
                     justifyContent: "center",
                     borderRadius: ".4rem",
                   }}
-                  >
+                >
                   <KeyboardReturnIcon
                     fontSize="small"
                     style={{ marginRight: 2, fontSize: 18 }}
@@ -57,7 +57,7 @@ const ClaimsDetail = () => {
                             JSON.parse(
                               localStorage.getItem("selectedClaimRecord")
                             )?.patientName
-                          }{" "}
+                          }
                           {
                             JSON.parse(
                               localStorage.getItem("selectedClaimRecord")
@@ -74,7 +74,12 @@ const ClaimsDetail = () => {
                           >
                             Paid
                           </span>
-                          $200
+                          $
+                          {
+                            JSON.parse(
+                              localStorage.getItem("selectedClaimRecord")
+                            )?.payments
+                          }.00
                         </p>
                       ),
                     },

@@ -4,6 +4,7 @@ import {
   deleteClaim,
   editClaim,
   getClaimsData,
+  patientSearch,
 } from "./claim.actions";
 
 const INITIAL_STATE = {
@@ -12,6 +13,7 @@ const INITIAL_STATE = {
   claimCreateResponse: null,
   claimUpdateResponse: null,
   selectedClaimRecord: null,
+  patientSearchRes: null,
 };
 
 const ClaimSlice = createSlice({
@@ -29,6 +31,9 @@ const ClaimSlice = createSlice({
     });
     builder.addCase(editClaim.fulfilled, (state, action) => {
       state.claimUpdateResponse = action.payload;
+    });
+    builder.addCase(patientSearch.fulfilled, (state, action) => {
+      state.patientSearchRes = action.payload;
     });
   },
   reducers: {
@@ -48,6 +53,10 @@ const ClaimSlice = createSlice({
 });
 
 const { reducer } = ClaimSlice;
-export const { clearClaimEditResponse, setSelectedClaimRecord ,clearClaimCreateResponse,clearClaimDeleteResponse} =
-  ClaimSlice.actions;
+export const {
+  clearClaimEditResponse,
+  setSelectedClaimRecord,
+  clearClaimCreateResponse,
+  clearClaimDeleteResponse,
+} = ClaimSlice.actions;
 export default reducer;

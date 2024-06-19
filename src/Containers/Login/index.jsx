@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-
 import { IconButton, TextField } from "@mui/material";
 import { Button, Typography } from "antd";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,21 +9,17 @@ import clinicLoginCover1_5x from "../../assets/images/clinic-login-cover1_5x.png
 import clinicLoginCover2x from "../../assets/images/clinic-login-cover2x.png";
 import validationSchema from "../../Helpers/ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { clickLogin, getuserData } from "../../Redux/Login/login.actions";
-import { LoginResponse, apiStatus } from "../../Redux/Login/login.reducer";
-import { loginInfo } from "../../Redux/PriorAuth/PriorAuthApis/prior.actions";
+import { clickLogin } from "../../Redux/Login/login.actions";
+import { LoginResponse } from "../../Redux/Login/login.reducer";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [loginError, setloginError] = useState("");
   const [status, setstatus] = useState("default");
-  const { userdata, loginResponse, Status } = useSelector(
-    (state) => state.login
-  );
-  const { cache } = useSelector((state) => state.prior);
+  const { loginResponse } = useSelector((state) => state.login);
+
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -45,7 +40,6 @@ const LoginForm = () => {
           password: values.password,
         })
       );
-      dispatch(apiStatus(true));
     },
   });
 
@@ -57,79 +51,17 @@ const LoginForm = () => {
   useEffect(() => {
     if (loginResponse && loginResponse.data) {
       const { data } = loginResponse;
-      // console.log(loginResponse);
-      // console.log(data);
       let responseCode = loginResponse?.responseCode;
       if (data && responseCode === 0) {
-        localStorage.setItem("access_token", data?.access_token);
-
-        // const roles = data?.roles;
-        // const isAdmin = roles?.some((role) => role.roleId === 2);
-        // set details in to local storage
-        // localStorage.setItem("isAdministratorAccess", isAdmin);
+        localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refreshToken", data.refresh_token);
-
         // api calls
-        // dispatch(getuserData({ id: data.userId }));
         dispatch(LoginResponse(null));
         // dispatch(loginInfo());
         navigate("/claimslist");
       }
-      if (responseCode === 117) {
-        setloginError("Login failed. Please enter valid credentials");
-      }
-      if (responseCode === 159) {
-        setloginError(
-          "We are working to ensure your account is activated. Due to demand, this is taking longer than we anticipated. We will reach out to you as soon as possible to verify your information and activate the account. Thank you for your patience"
-        );
-      }
     }
   }, [loginResponse]);
-
-  // useEffect(() => {
-  //   if (Status === true) {
-  //     if (userdata && userdata.data) {
-  //       const { data } = userdata;
-  //       // let userx = data.memoryCash.userList ? data.memoryCash.userList : []
-  //       let userx = [...(data.memoryCash.userList || [])];
-
-  //       userx.push({
-  //         userId: 0,
-  //         roleId: 101,
-  //         roleName: "INTERNAL_SUPPORT",
-  //         firstName: "Internal",
-  //         middleName: "",
-  //         lastName: "Support",
-  //         fullName: "Internal Support",
-  //         clinicId: 0,
-  //         clinicName: "",
-  //       });
-  //       let memoryCash = {
-  //         appointmentType: data.memoryCash.appointmentType
-  //           ? data.memoryCash.appointmentType
-  //           : [],
-  //         locations: data.memoryCash.locations ? data.memoryCash.locations : [],
-  //         permissionEntity: data.memoryCash.permissionEntity
-  //           ? data.memoryCash.permissionEntity
-  //           : [],
-  //         provider: data.memoryCash.provider ? data.memoryCash.provider : [],
-  //         userList: userx,
-  //         posList: data.memoryCash.posList,
-  //         tosList: data.memoryCash.tosList,
-  //       };
-  //       localStorage.setItem("memoryCash", JSON.stringify(memoryCash));
-  //       localStorage.setItem("user_data", JSON.stringify(data.loginInfo));
-  //     }
-  //   }
-  // }, [userdata]);
-
-  // useEffect(() => {
-  //   if (cache?.data) {
-  //     let Response = cache.data;
-  //     localStorage.setItem("cache", JSON.stringify(Response));
-  //     navigate("/claimslist");
-  //   }
-  // }, [cache]);
   return (
     <div className="clinicLogin">
       <header className="clinicLogin__header">
@@ -191,14 +123,14 @@ const LoginForm = () => {
                     variant="outlined"
                     className="clinicLogin__inputField"
                     name="clinic_name"
-                    value={formik.values.clinic_name}
+                    value={formik.values.clinicId}
                     onChange={formik.handleChange}
                     error={
                       formik.touched.clinic_name &&
-                      Boolean(formik.errors.clinic_name)
+                      Boolean(formik.errors.clinicId)
                     }
                     helperText={
-                      formik.touched.clinic_name && formik.errors.clinic_name
+                      formik.touched.clinicId && formik.errors.clinicId
                     }
                     sx={{
                       "& .MuiOutlinedInput-root": {

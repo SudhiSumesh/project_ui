@@ -8,40 +8,15 @@ export const clickLogin = createAsyncThunk(
     try {
       const res = await loginServices.login(credentials);
       // console.log(res.data, 'login actions')
-      if (res.data?.error || res.data?.responseCode == 1) {
-        console.log(res.data.error?.message);
-        toast.error("Invalid Credentials");
+
+      return res.data;
+    } catch (error) {
+      if (error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Something went wrong please try again");
+        console.log(error);
       }
-      return res.data;
-    } catch (error) {
-      toast.error("Something went wrong please try again");
-      console.log(error);
-    }
-  }
-);
-
-export const getuserData = createAsyncThunk(
-  "user/getuserdata",
-  async (data) => {
-    try {
-      const res = await loginServices.userData(data);
-
-      return res.data;
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong please try again");
-    }
-  }
-);
-export const logoutApi = createAsyncThunk(
-  "user/logout",
-  async (credentials) => {
-    try {
-      const res = await loginServices.logoutApi(credentials);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong please try again");
     }
   }
 );

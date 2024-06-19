@@ -85,7 +85,7 @@ function ClaimsList() {
     "Claim Status",
     "Action",
   ];
-
+  // Function to handle menu click in the Dropdown
   const handleMenuClick = (e) => {
     const value = e.target.value;
     setSelectedColumns((prev) =>
@@ -223,9 +223,11 @@ function ClaimsList() {
       searchQuery: value,
     }));
   };
-  useEffect(() => {
-    fetchData(); // check this use effect make unwanted re renders /try to make it simple one /efficent method
-  }, [filters.searchQuery]);
+
+  // useEffect(() => {
+  //   fetchData(); // Fetch data when search query changes
+  // }, [filters.searchQuery]);
+
   // Filter popover content
   const FilterPopover = (
     <div style={{ display: "flex", gap: "16px" }}>
@@ -330,7 +332,7 @@ function ClaimsList() {
   );
 
   // Dropdown menu items for sorting options
-  const Ditems = columns.map((column) => ({
+  const DropdownItems = columns.map((column) => ({
     key: column,
     label: (
       <Checkbox
@@ -406,7 +408,7 @@ function ClaimsList() {
               <span className="bold">Filters</span>
             </Button>
           </Popover>
-          <Dropdown menu={{ items: Ditems }}>
+          <Dropdown menu={{ items: DropdownItems }}>
             <Button type="primary" ghost size="medium" className="flex-center">
               <FilterListIcon
                 style={{ fontSize: "16px", marginRight: "2px" }}
@@ -432,6 +434,7 @@ function ClaimsList() {
           selectedProvider={filters.selectedProvider}
           selectedFacility={filters.selectedFacility}
           selectedStatus={filters.selectedStatus}
+          searchQuery={filters.searchQuery} //need to give the exact value at the time the user input in the search changes
           startDate={filters.startDate}
           endDate={filters.endDate}
           selectedColumns={selectedColumns}

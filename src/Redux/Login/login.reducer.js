@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { clickLogin, getuserData, logoutApi } from './login.actions'
+import { createSlice } from "@reduxjs/toolkit";
+import { clickLogin } from "./login.actions";
 
 const INITIAL_STATE = {
   Status: false,
@@ -8,32 +8,33 @@ const INITIAL_STATE = {
   patientTicker: {},
   userdata: null,
   logout: null,
-}
+};
 const LoginSlice = createSlice({
-  name: 'login',
+  name: "login",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
     builder.addCase(clickLogin.fulfilled, (state, action) => {
-      state.loginResponse = action.payload
-      state.login = true
-    })
-    builder.addCase(getuserData.fulfilled, (state, action) => {
-      state.userdata = action.payload
-    })
-
-    builder.addCase(logoutApi.fulfilled, (state, action) => {
-      state.logout = action.payload
-    })
+      state.loginResponse = action.payload;
+      state.login = true;
+    });
   },
   reducers: {
     LoginResponse(state, action) {
-      state.loginResponse = action.payload
+      state.loginResponse = action.payload;
     },
-    apiStatus(state, action) {
-      state.Status = action.payload
+
+    logout: (state) => {
+      localStorage.clear();
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("selectedClaimRecord");
+      state.isAuthenticated = false;
+      state.user = null;
+      // Optionally, redirect to login page
+
+      window.location.href = "/login";
     },
   },
-})
-export const { LoginResponse, apiStatus } = LoginSlice.actions
-const { reducer } = LoginSlice
-export default reducer
+});
+export const { LoginResponse, logout } = LoginSlice.actions;
+const { reducer } = LoginSlice;
+export default reducer;

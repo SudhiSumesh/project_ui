@@ -25,6 +25,11 @@ class ClaimServices {
   deleteClaimApi(claimId) {
     return httpCommon.delete(`${Apis.claimDeleteApi}/${claimId}`);
   }
+  SearchPatientApi(data) {
+    return httpCommon.get(
+      `${Apis.searchPatientApi}/?clinicId=${data.clinicId}&searchInput=${data.searchInput}`
+    );
+  }
 }
 
 export default new ClaimServices();

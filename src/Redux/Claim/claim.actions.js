@@ -26,18 +26,15 @@ export const createNewClaim = createAsyncThunk(
     }
   }
 );
-export const editClaim = createAsyncThunk(
-  "claims/editClaim",
-  async (data) => {
-    try {
-      const res = await claimServices.editClaimApi(data);
-      return res.data;
-    } catch (error) {
-      // toast.error("Faild to edit claim please try again");
-      console.log(error);
-    }
+export const editClaim = createAsyncThunk("claims/editClaim", async (data) => {
+  try {
+    const res = await claimServices.editClaimApi(data);
+    return res.data;
+  } catch (error) {
+    // toast.error("Faild to edit claim please try again");
+    console.log(error);
   }
-);
+});
 
 export const deleteClaim = createAsyncThunk(
   "claims/deleteClaim",
@@ -50,6 +47,21 @@ export const deleteClaim = createAsyncThunk(
         error.response.data.error
           ? error.response.data.error
           : "Faild to delete claim please try again"
+      );
+    }
+  }
+);
+export const patientSearch = createAsyncThunk(
+  "claims/patientSearch",
+  async (data) => {
+    try {
+      const res = await claimServices.SearchPatientApi(data);
+      return res.data;
+    } catch (error) {
+      toast.error(
+        error.response.data.error
+          ? error.response.data.error
+          : "Faild to search  patient please try again"
       );
     }
   }
