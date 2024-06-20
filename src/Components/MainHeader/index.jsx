@@ -2,7 +2,6 @@ import React from "react";
 import NavBar from "../NavBar";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import "./index.css";
 const MainHeader = () => {
   return (
@@ -20,7 +19,6 @@ const MainHeader = () => {
           Trillium.
           <span style={{ color: "#4F4F4F" }}>health</span>
         </div>
-        {/* <LogoMenu /> */}
         <div className="profile-settings">
           <MenuIcon /> |<strong>PA</strong>
         </div>

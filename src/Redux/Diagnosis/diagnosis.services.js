@@ -9,7 +9,9 @@ class DiagnosisService {
     return httpCommon.put(`${Apis.updateDiagnosisApi}`, data);
   }
   getIcdeCode(data) {
-    return httpCommon.get(`${Apis.icdSearchApi}`, data);
+    return httpCommon.get(
+      `${Apis.icdSearchApi}?search=${data.search}&clinicId=${data.clinicId}`
+    );
   }
 }
 export default new DiagnosisService();

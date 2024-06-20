@@ -9,7 +9,6 @@ export const getClaimsData = createAsyncThunk(
       const res = await claimServices.getClaimsData(data);
       return res.data;
     } catch (error) {
-      // toast.error("Faild to load claims data please try again");
       console.log(error);
     }
   }
@@ -21,7 +20,6 @@ export const createNewClaim = createAsyncThunk(
       const res = await claimServices.createNewClaimsApi(data);
       return res.data;
     } catch (error) {
-      // toast.error("Faild to add claim please try again");
       console.log(error);
     }
   }
@@ -31,7 +29,6 @@ export const editClaim = createAsyncThunk("claims/editClaim", async (data) => {
     const res = await claimServices.editClaimApi(data);
     return res.data;
   } catch (error) {
-    // toast.error("Faild to edit claim please try again");
     console.log(error);
   }
 });

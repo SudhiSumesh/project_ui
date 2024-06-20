@@ -1,15 +1,9 @@
 import React from "react";
 import { Tabs } from "antd";
 import "./style.css";
-import PatientInfo from "./BasicDetailTab/PatientInfo";
-import InsuranceTab from "./BasicDetailTab/InsuranceTab";
 import BasicDetailTab from "./BasicDetailTab";
 import Notes from "./Notes";
 import Files from "./Files";
-
-const onChange = (key) => {
-  console.log(key);
-};
 
 const items = [
   {
@@ -27,10 +21,7 @@ const items = [
       </div>
     ),
     children: (
-      <div
-      // className="tab-content scrollbarY--custom"
-      // key={`tab-content-${elem.key}`}
-      >
+      <div>
         <BasicDetailTab />
       </div>
     ),
@@ -68,9 +59,5 @@ const items = [
     children: <Files />,
   },
 ];
-
-const LastPanel = () => (
-  <Tabs size="small" onChange={onChange} type="card" items={items} />
-);
-
+const LastPanel = () => <Tabs size="small" type="card" items={items} />;
 export default LastPanel;

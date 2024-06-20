@@ -112,28 +112,36 @@ const ClaimsTable = ({
       title: "Charges",
       dataIndex: "charges",
       render: (text) => (
-        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+        <span className="table-item">
+          {`$${truncateText(text, 5)}.00` ?? "$ 0.00"}
+        </span>
       ),
     },
     {
       title: "Payments",
       dataIndex: "payments",
       render: (text) => (
-        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+        <span className="table-item">
+          {`$${truncateText(text, 5)}.00` ?? "$ 0.00"}
+        </span>
       ),
     },
     {
       title: "Ins Bal",
       dataIndex: "insBal",
       render: (text) => (
-        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+        <span className="table-item">
+          {`$${truncateText(text, 5)}.00` ?? "$ 0.00"}
+        </span>
       ),
     },
     {
       title: "Pat Bal",
       dataIndex: "patBal",
       render: (text) => (
-        <span className="table-item">{`$${text}.00` ?? "$ 0.00"}</span>
+        <span className="table-item">
+          {`$${truncateText(text, 5)}.00` ?? "$ 0.00"}
+        </span>
       ),
     },
     {
@@ -164,9 +172,6 @@ const ClaimsTable = ({
                 "selectedClaimRecord",
                 JSON.stringify(record)
               );
-              // dispatch(
-              //   setSelectedClaimRecord(localStorage.getItem("selectedClaimRecord"))
-              // );
               navigate("/claimslist/claims-details");
             }}
           ></ViewListIcon>
@@ -189,7 +194,6 @@ const ClaimsTable = ({
   // const columns = columnDefinitions.filter((col) =>
   //   selectedColumns.includes(col.title)
   // );
-
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(
@@ -271,8 +275,6 @@ const ClaimsTable = ({
     ) {
       toast.success(claimDeleteResponse.data?.message);
       fetchData(); // Call fetchData to refresh data after deletion
-
-      //Here need to remove the value of claimDeleteResponse is needed claimDeleteResponse=null/with a reducer function
     }
   }, [claimDeleteResponse, fetchData]);
   // Handle delete claim action

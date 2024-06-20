@@ -1,100 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button, Layout, Dropdown, Space } from "antd";
 import "./style.css";
-import { useSelector } from "react-redux";
-import { setSelectedClaimRecord } from "../../Redux/Claim/claim.reducer";
+import SidebarContent from "./Sidebaritem";
+import { useDispatch, useSelector } from "react-redux";
+import { getClaimsData } from "../../Redux/Claim/claim.actions";
+import { statuses } from "../../Helpers/enums";
+import { formatDate, lastYear } from "../../Helpers/dateFormater";
 const items = [
   {
     label: "1st menu item",
     key: "1",
     icon: <UserOutlined />,
   },
-  {
-    label: "2nd menu item",
-    key: "2",
-    icon: <UserOutlined />,
-  },
-  {
-    label: "3rd menu item",
-    key: "3",
-    icon: <UserOutlined />,
-    danger: true,
-  },
-  {
-    label: "4th menu item",
-    key: "4",
-    icon: <UserOutlined />,
-    danger: true,
-    disabled: true,
-  },
 ];
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selected, setSelected] = useState(false);
+  const dispatch = useDispatch();
+  const { claimData } = useSelector((state) => state.claim);
   const { Sider } = Layout;
-  // const { } = useSelector((state) => state.claim);
-  // console.log(JSON.parse(localStorage.getItem("selectedClaimRecord")).key);
-  const sideBarContent = (
-    <div
-      className="sideBarContent "
-      style={{
-        padding: "10px",
-        borderBottom: "1px solid #C1C9D2",
-        width: "100%",
-      }}
-    >
-      {/* use ref or something to uniquly identify each element do some changes in the sidebarComponent ,for change bgcolor on selecting each item  */}
-      <div
-        onClick={() => {
-          setSelected(!selected);
-        }}
-        className={selected ? " selected-bg" : ""}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "10px",
-          padding: "10px",
-          border: "1px solid #8792A2",
-          borderRadius: "10px",
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            gap: "10px",
-          }}
-        >
-          <span
-            style={{ fontSize: "14px", fontWeight: "700", color: "#8792A2" }}
-          >
-            {JSON.parse(localStorage.getItem("selectedClaimRecord"))?.patientName || ""} (
-            {JSON.parse(localStorage.getItem("selectedClaimRecord"))?.dos || ""})
-          </span>
-          <a href="#">Edit</a>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            color: "#8792A2",
-          }}
-        >
-          <span>{JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimStatus || ""}</span>
-          <span>BCBS OF TX</span>
-        </div>
-      </div>
-    </div>
-  );
-
+  const start = JSON.parse(localStorage.getItem("selectedClaimRecord"))?.key;
+  useEffect(() => {
+    dispatch(
+      getClaimsData({
+        clinicId: 93422,
+        start: start + 1,
+        limit: 5,
+        providerId: "",
+        serviceIds: "",
+        facilityIds: "",
+        status: "",
+        startDate: lastYear(new Date()),
+        endDate: formatDate(new Date()),
+      })
+    );
+  }, []);
+  const handleSidebarItemClick = (item) => {
+    localStorage.setItem("selectedClaimRecord", JSON.stringify(item));
+    setSelectedItem(item);
+  };
   const menuProps = {
     items,
   };
@@ -152,9 +98,38 @@ const SideBar = () => {
             }}
           />
         </div>
-        {/* use ref or something to uniquly identify each element do some changes in the sidebarComponent ,for change bgcolor on selecting each item  */}
-        {sideBarContent}
-      
+        {!collapsed && (
+          <>
+            {" "}
+            <SidebarContent
+              patientName={
+                JSON.parse(localStorage.getItem("selectedClaimRecord"))
+                  ?.patientName
+              }
+              dos={JSON.parse(localStorage.getItem("selectedClaimRecord"))?.dos}
+              claimStatus={
+                JSON.parse(localStorage.getItem("selectedClaimRecord"))
+                  ?.claimStatus
+              }
+            />
+            {claimData?.result?.providerSummary?.map((item, index) => (
+              <SidebarContent
+                key={index}
+                patientName={item.spatientName}
+                claimId={item.claimId}
+                claimStatus={
+                  item.claimStatus ? statuses[item.claimStatus - 1].name : ""
+                }
+                dos={formatDate(item.sdos)}
+                onClick={() => handleSidebarItemClick(item)}
+                isSelected={
+                  JSON.stringify(item) ===
+                  localStorage.getItem("selectedClaimRecord")
+                }
+              />
+            ))}
+          </>
+        )}
       </div>
     </Sider>
   );

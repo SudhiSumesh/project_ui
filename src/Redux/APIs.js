@@ -1,6 +1,4 @@
 export const Apis = {
-
-
   //login Api
   claimsLoginApi: "http://localhost:3006/api/v1/auth/login",
 
@@ -10,6 +8,7 @@ export const Apis = {
   createClaimApi: "http://localhost:3000/api/v1/addClaim",
   updateClaimApi: "http://localhost:3000/api/v1/updateClaim",
   searchPatientApi: "http://localhost:3000/api/v1/searchPatient",
+  
   //claim-diagnosis-Api
   getClaimsDiagnosisDataApi: "http://localhost:3002/api/v1/getDiagnosis",
   updateDiagnosisApi: "http://localhost:3002/api/v1/editDiagnosis",

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Button, Descriptions, Input, Table } from "antd";
+import { Button, Descriptions } from "antd";
 import "./style.css";
 
 function PatientCharts() {
-  const [edit, setEdit] = useState(false);
   const [expand, setExpand] = useState(false);
 
   return (

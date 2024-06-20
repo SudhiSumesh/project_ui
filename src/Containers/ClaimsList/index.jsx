@@ -182,6 +182,7 @@ function ClaimsList() {
       selectedFacility: [],
       selectedStatus: [],
     });
+     setPopoverOpen(false);
   };
 
   // Function to fetch data based on filters

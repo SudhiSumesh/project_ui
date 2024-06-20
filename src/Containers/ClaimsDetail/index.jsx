@@ -8,7 +8,6 @@ import MainHeader from "../../Components/MainHeader";
 import { useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import "./style.css";
-import { useSelector } from "react-redux";
 const { Header } = Layout;
 const ClaimsDetail = () => {
   const navigate = useNavigate();
@@ -125,7 +124,6 @@ const ClaimsDetail = () => {
               </div>
             </Header>
           </div>
-
           <div className="tabs">
             <MiddleScreen />
             <LastPanel />

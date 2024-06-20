@@ -7,29 +7,9 @@ import ForumIcon from "@mui/icons-material/Forum";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import PaidIcon from "@mui/icons-material/Paid";
 import ArticleIcon from "@mui/icons-material/Article";
-import { useNavigate } from "react-router-dom";
-import { red } from "@mui/material/colors";
 import "./index.css";
 function NavBar() {
   const [selectedKey, setSelectedKey] = useState("3");
-  //   const navigate = useNavigate();
-  //   const onChange = (key) => {
-  //     console.log(key);
-  //     setSelectedKey(key);
-  //     if (key === "1") {
-  //       navigate("/ar");
-  //     } else if (key === "2") {
-  //       navigate("tasks");
-  //     } else if (key === "3") {
-  //       navigate("priorauth");
-  //     } else if (key === "4") {
-  //       navigate("coding");
-  //     } else if (key === "5") {
-  //       navigate("eligibility");
-  //     } else if (key === "6") {
-  //       navigate("admin");
-  //     }
-  //   };
   const items = [
     {
       key: "1",
@@ -110,7 +90,6 @@ function NavBar() {
         // defaultActiveKey="3"
         items={items}
         size="small"
-        // style={{borderBottom:'none'}}
         // onChange={onChange}
       />
     </>

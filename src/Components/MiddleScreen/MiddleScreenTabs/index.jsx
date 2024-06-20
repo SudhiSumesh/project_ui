@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Tabs } from "antd";
 import "./style.css";
-
 import Charges from "./Charges";
 import Payments from "./Payments";
 import Charts from "./Charts";
@@ -62,11 +61,6 @@ const items = [
 ];
 
 const MiddleScreenTabs = () => {
-  return (
-    <div>
-      <Tabs size="small" onChange={onChange} type="card" items={items} />
-    </div>
-  );
+  return <Tabs size="small" onChange={onChange} type="card" items={items} />;
 };
-
 export default MiddleScreenTabs;

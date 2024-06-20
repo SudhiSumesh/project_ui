@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PatientPayments from "./PatientPayments";
 import { getPaymentSummary } from "../../../../Redux/Payments/payments.actions";
 import { useDispatch, useSelector } from "react-redux";

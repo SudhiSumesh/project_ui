@@ -12,11 +12,7 @@ import {
 function Files() {
   const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
-  //   const {  } = useSelector((state) => state.claim);
-  const { filesDataRes, addFileRes, deleteFileRes } = useSelector(
-    (state) => state.files
-  );
-
+  const { filesDataRes } = useSelector((state) => state.files);
   // Fetch files when the selected claim changes
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("selectedClaimRecord"))?.patientId) {
@@ -42,7 +38,7 @@ function Files() {
       );
     }
   }, [filesDataRes]);
-  console.log(files);
+
   // Handle file upload
   const handleUpload = ({ file, onSuccess, onError }) => {
     const formData = new FormData();
@@ -77,6 +73,7 @@ function Files() {
         onError(error);
       });
   };
+
   // Handle file removal
   const handleRemove = (file) => {
     const fileId = file.uid;
@@ -97,6 +94,7 @@ function Files() {
         }
       })
       .catch((error) => {
+        // console.log(error);
         message.error(`${file.name} file deletion failed.`);
       });
   };
@@ -107,7 +105,6 @@ function Files() {
       <div className="file-display">
         <Upload
           customRequest={handleUpload}
-          //   action={"https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"}
           onRemove={handleRemove}
           listType="picture"
           fileList={[...files]}

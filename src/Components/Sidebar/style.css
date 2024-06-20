@@ -1,6 +1,19 @@
-.firstRow-sideBar{
-    border-bottom: 1px solid #C1C9D2;
-    width: 100%;
+.sidebar-content-container {
+  width: "100%";
+  background-color: "red";
+}
+.sidebar-content {
+  padding: 10px;
+  cursor: pointer;
+}
+
+ .selected {
+  background-color: rgb(33, 202, 211); 
+}
+
+.firstRow-sideBar {
+  border-bottom: 1px solid #c1c9d2;
+  width: 100%;
 }
 
 .collapsedSidebar .firstRow-sideBar {
@@ -11,7 +24,14 @@
   display: none;
 }
 
-
-.selected-bg{
-  
+.selected-bg {
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "center";
+  align-items: "center";
+  gap: "10px";
+  padding: "10px";
+  border: "1px solid #8792A2";
+  border-radius: "10px";
+  width: "100%";
 }

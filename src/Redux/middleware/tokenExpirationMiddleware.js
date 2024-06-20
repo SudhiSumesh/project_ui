@@ -1,4 +1,3 @@
-// tokenExpirationMiddleware.js
 import { logout } from "../Login/login.reducer";
 
 const tokenExpirationMiddleware =

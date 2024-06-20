@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { clickLogin } from "./login.actions";
+import { replace } from "lodash";
 
 const INITIAL_STATE = {
   Status: false,
@@ -29,9 +30,13 @@ const LoginSlice = createSlice({
       localStorage.removeItem("selectedClaimRecord");
       state.isAuthenticated = false;
       state.user = null;
-      // Optionally, redirect to login page
 
-      window.location.href = "/login";
+      // Redirect to the login page
+      window.location.href = "/login"; // Redirect using the full URL
+      window.history.pushState(null, null, "/login"); // Update the URL in the browser
+
+      //Reload the page after logout
+      window.location.reload();
     },
   },
 });

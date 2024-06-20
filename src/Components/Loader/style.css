@@ -49,15 +49,6 @@
   opacity: 0;
 }
 
-/* 
-Animation Key frames - Balls are loaded with 0 opacity and actually don't start until animation-delay is up.
-Revolve around the Y axis with a radius of 35px.
-rotateX gives a feel of slightly above it.
-Increasing to 45px on the front size give an interesting whip effect
-Then negative rotate to keep it facing forward. It is after all just a 2d circle.
-Slightly scale to enhance 3D effect.
-Reduce opacity when in the back.
-*/
 @keyframes load {
   0% {
     opacity: 0;

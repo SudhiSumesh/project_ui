@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { Button, DatePicker, Input, Select } from "antd";
-import { ClaimsFormValidationSchema } from "../../Helpers/ValidationSchema";
 import { editClaim } from "../../Redux/Claim/claim.actions";
 import { useDispatch, useSelector } from "react-redux";
+import { formatDate } from "../../Helpers/dateFormater";
 import {
   providerList,
   serviceList,
@@ -13,17 +13,8 @@ import {
   payerList,
 } from "../../Helpers/enums";
 import "./style.css";
-// Function to format date to YYYY-MM-DD
-const formatDate = (date) => {
-  if (!date) return null;
-  const d = new Date(date);
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const year = d.getFullYear();
-  return `${year}-${month}-${day}`;
-};
+
 function ClaimEditForm({ closeAdd, selectedRecord }) {
-  const clinicId = localStorage.getItem("clinic_id");
   const dispatch = useDispatch();
   const { claimUpdateResponse } = useSelector((state) => state.claim);
   // Mapping enums to options for Select components

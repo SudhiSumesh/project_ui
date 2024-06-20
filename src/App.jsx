@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes,} from "react-router-dom";
 import "./GlobalStyles.css";
 import "./index.css";
 import { ConfigProvider } from "antd";

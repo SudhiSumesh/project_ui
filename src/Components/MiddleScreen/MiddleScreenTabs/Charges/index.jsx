@@ -7,7 +7,7 @@ function Charges() {
     <>
       <div className="tab-content scrollbarY--custom">
         <Diagnosis />
-    <Services/>
+        <Services />
       </div>
     </>
   );

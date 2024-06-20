@@ -9,7 +9,6 @@ export const getClaimsCharges = createAsyncThunk(
       const res = await chargesServices.getClaimChargesApi(data);
       return res.data;
     } catch (error) {
-      // toast.error("Faild to get charges please try again");
       console.log(error);
     }
   }
@@ -21,7 +20,6 @@ export const addNewCharges = createAsyncThunk(
       const res = await chargesServices.addChargesApi(data);
       return res.data;
     } catch (error) {
-      // toast.error("Faild to add charges please try again");
       console.log(error);
     }
   }
@@ -33,7 +31,6 @@ export const updateCharges = createAsyncThunk(
       const res = await chargesServices.updateChargesApi(data);
       return res.data;
     } catch (error) {
-      // toast.error("Faild to update charges please try again");
       console.log(error);
     }
   }

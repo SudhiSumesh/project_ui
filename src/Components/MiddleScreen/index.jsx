@@ -28,7 +28,6 @@ const MiddleScreen = () => {
           <div style={{ borderBottom: "1px solid #8792A2 " }}>
             {text} <Edit fontSize="inherit"></Edit> X
           </div>
-          {/* <div className="small-font"> Laproscopic cholecystectomy</div> */}
         </div>
       ),
     },
@@ -207,11 +206,6 @@ const MiddleScreen = () => {
                   DX4
                 </Button>
               </div>
-              {/* <Input
-              placeholder="Search"
-              prefix={<SearchOutlined />}
-              style={{ width: 200 }}
-            /> */}
               <div>
                 <Button shape="" ghost icon={<SearchOutlined />} />
                 <Button shape="" ghost icon={<PlusOutlined />} />

@@ -1,4 +1,4 @@
-import { Descriptions, List, Button } from "antd";
+import { Descriptions, List, Button, Popconfirm } from "antd";
 import React, { useEffect, useState } from "react";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import "./style.css";
@@ -14,11 +14,9 @@ function Notes() {
   const [notes, setNotes] = useState([]);
   const [noteInput, setNoteInput] = useState("");
   const dispatch = useDispatch();
-  //   const { } = useSelector((state) => state.claim);
-  const { claimNotesRes, deleteNotesRes, addNotesRes } = useSelector(
+  const { claimNotesRes} = useSelector(
     (state) => state.notes
   );
-
   // Fetch claim notes when the selected claim changes
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId) {
@@ -87,9 +85,16 @@ function Notes() {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Button type="link" onClick={() => handleDelete(item.notesId)}>
-                  Delete
-                </Button>,
+                <Popconfirm
+                  title="Are you sure you want to delete this note?"
+                  onConfirm={() => handleDelete(item.notesId)}
+                  onCancel={() => {}}
+                  okText="Yes"
+                  cancelText="No"
+                  placement="topRight"
+                >
+                  <Button type="link">Delete</Button>
+                </Popconfirm>,
               ]}
             >
               {item.notes}

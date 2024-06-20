@@ -25,8 +25,8 @@ httpCommon.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error.response ,"token expire res http common ");
-    if (error.response && error.response.error) {
+    console.log(error.response, "token expire res http common ");
+    if (error.response && error.response.data.responseCode === 117) {
       // Dispatch logout action if the token is expired or invalid
       store.dispatch({ type: "auth/tokenExpired" });
     }

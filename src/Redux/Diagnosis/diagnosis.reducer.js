@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { editClaimsDiagnosis, getClaimsDiagnosis } from "./diagnosis.actions";
+import {
+  editClaimsDiagnosis,
+  getClaimsDiagnosis,
+  icdSearch,
+} from "./diagnosis.actions";
 
 const INITIAL_STATE = {
   diagnosisData: {},
   editDiagnosisRes: null,
+  icdSearchData: {},
 };
 
 const DiagnosisSlice = createSlice({
@@ -15,6 +20,9 @@ const DiagnosisSlice = createSlice({
     });
     builder.addCase(editClaimsDiagnosis.fulfilled, (state, action) => {
       state.editDiagnosisRes = action.payload;
+    });
+    builder.addCase(icdSearch.fulfilled, (state, action) => {
+      state.icdSearchData = action.payload;
     });
   },
 });

@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Modal, Table } from "antd";
+import { Button, Checkbox, ConfigProvider, Modal, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,17 +11,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "./style.css";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 function Services() {
   const [openAdd, setOpenAdd] = useState(false);
   const [visitServiceData, setVisitServiceData] = useState([]);
   const [editTableData, setEditTableData] = useState([]);
-
   const dispatch = useDispatch();
-  const { ChargesDataRes, updateChargeRes, deleteChargeRes, addChargesRes } =
-    useSelector((state) => state.charges);
-  //modal functions
+  const { ChargesDataRes, deleteChargeRes, addChargesRes } = useSelector(
+    (state) => state.charges
+  );
+
+  //Modal functions
   const handleOpenAdd = () => {
     setOpenAdd(true);
   };
@@ -29,7 +30,7 @@ function Services() {
   const closeAdd = () => {
     setOpenAdd(false);
   };
-  // handle add new row to table
+  // Handle add new row to table
   const handleAddRow = () => {
     const newRow = {
       key: editTableData.length,
@@ -50,7 +51,7 @@ function Services() {
     };
     setEditTableData([...editTableData, newRow]);
   };
-  // handle input change
+  // Handle input change
   const handleInputChange = (index, key, value) => {
     setEditTableData((prevData) => {
       const newData = [...prevData];
@@ -58,7 +59,7 @@ function Services() {
       return newData;
     });
   };
-  // handle save
+  // Handle save
   const handleSave = () => {
     // console.log("Saved Data: ", editTableData);
     editTableData.map((item) =>
@@ -77,21 +78,28 @@ function Services() {
           modifier1: item.m1,
           modifier2: item.m2,
         })
-      )
+      ).then(() => {
+        toast.success("Updated successfully");
+      })
     );
     setOpenAdd(false);
-    dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
+    dispatch(
+      getClaimsCharges(
+        JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId
+      )
+    );
   };
   // handle Add New Charges
   const handleAddNewCharges = (record) => {
-    console.log(record, "record");
-    // console.log(JSON.parse(localStorage.getItem("selectedClaimRecord")), "selected record");
     dispatch(
       addNewCharges({
         clinicId: localStorage.getItem("clinic_id") ?? null,
-        claimId: JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId,
-        visitId: JSON.parse(localStorage.getItem("selectedClaimRecord"))?.visitId,
-        patientId: JSON.parse(localStorage.getItem("selectedClaimRecord"))?.patientId,
+        claimId: JSON.parse(localStorage.getItem("selectedClaimRecord"))
+          ?.claimId,
+        visitId: JSON.parse(localStorage.getItem("selectedClaimRecord"))
+          ?.visitId,
+        patientId: JSON.parse(localStorage.getItem("selectedClaimRecord"))
+          ?.patientId,
         // procedureCodeId,
         procedureCode: record?.cpt?.cptCode,
         unit: record?.No,
@@ -105,40 +113,45 @@ function Services() {
         comments: "",
         sequenceNum: "",
         descript: record?.description,
-        diagnosisPointer1: record.dx1 ?1:0,
-        diagnosisPointer2: record.dx2?1:0,
-        diagnosisPointer3: record.dx3?1:0,
-        diagnosisPointer4: record.dx4?1:0,
+        diagnosisPointer1: record.dx1 ? 1 : 0,
+        diagnosisPointer2: record.dx2 ? 1 : 0,
+        diagnosisPointer3: record.dx3 ? 1 : 0,
+        diagnosisPointer4: record.dx4 ? 1 : 0,
         modifier1: record.m1,
         modifier2: record.m2,
       })
     );
   };
-  // handle delete
+  // Handle delete
   const handleDelete = (procedureId, index) => {
     const newData = [...editTableData];
     newData.splice(index, 1);
     setEditTableData(newData);
     if (procedureId) {
       dispatch(deleteCharges(procedureId));
-      dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
+      dispatch(
+        getClaimsCharges(
+          JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId
+        )
+      );
     } else {
       console.log("procedureId required");
     }
   };
-  //effect for show toast res to user
-  useEffect(() => {
-    if (updateChargeRes && updateChargeRes.responseCode === 0) {
-    }
-    toast.success("Updated successfully");
-  }, [updateChargeRes]);
-  //effect for fetch charges data
+  //Effect for fetch charges related to selected claim
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId) {
-      dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
+      dispatch(
+        getClaimsCharges(
+          JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId
+        )
+      );
     }
-  }, [JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId, dispatch]);
-  //effect for set data to state
+  }, [
+    JSON.parse(localStorage.getItem("selectedClaimRecord"))?.claimId,
+    dispatch,
+  ]);
+  //Effect for set data to state
   useEffect(() => {
     if (
       ChargesDataRes &&
@@ -183,20 +196,24 @@ function Services() {
     }
   }, [ChargesDataRes]);
 
-  //add charge res
+  //Add charge res
   useEffect(() => {
     if (addChargesRes && addChargesRes.responseCode === 0) {
       toast.success("service Added successfully");
-       dispatch(getClaimsCharges(JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId));
+      dispatch(
+        getClaimsCharges(
+          JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId
+        )
+      );
     }
   }, [addChargesRes]);
-  //delete res effect
+  //Delete res effect
   useEffect(() => {
     if (deleteChargeRes && deleteChargeRes.responseCode === 0) {
       toast.success("service deleted successfully");
     }
   }, [deleteChargeRes]);
-  //table columns
+  //Table columns
   const columns = [
     {
       title: "CPT",
@@ -329,7 +346,8 @@ function Services() {
       title: "DX1",
       dataIndex: "dx1",
       render: (text, _, index) => (
-        <input
+        <Checkbox
+          style={{}}
           type="checkbox"
           checked={text ? true : false}
           onChange={(e) =>
@@ -342,7 +360,7 @@ function Services() {
       title: "DX2",
       dataIndex: "dx2",
       render: (text, _, index) => (
-        <input
+        <Checkbox
           type="checkbox"
           checked={text ? true : false}
           onChange={(e) =>
@@ -355,7 +373,7 @@ function Services() {
       title: "DX3",
       dataIndex: "dx3",
       render: (text, _, index) => (
-        <input
+        <Checkbox
           type="checkbox"
           checked={text ? true : false}
           onChange={(e) =>
@@ -368,7 +386,7 @@ function Services() {
       title: "DX4",
       dataIndex: "dx4",
       render: (text, _, index) => (
-        <input
+        <Checkbox
           type="checkbox"
           checked={text ? true : false}
           onChange={(e) =>
@@ -431,6 +449,9 @@ function Services() {
               },
               Table: {
                 headerBg: "#E0F0F2",
+              },
+              Input: {
+                colorBgBase: "red",
               },
             },
           }}

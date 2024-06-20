@@ -1,8 +1,42 @@
-# React + Vite
+## Claim Management Frontend Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend part of an application for claim management built using React and Vite.
 
-Currently, two official plugins are available:
+### Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before you begin, ensure you have met the following requirements:
+
+- You have installed [Node.js](https://nodejs.org/) (which includes npm).
+
+### Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone [url]
+
+   ```
+
+3. Navigate to the project directory
+
+   ```bash
+   cd your-repository
+
+   ```
+
+4. Install dependencies
+
+   ```bash
+   npm install
+
+   ```
+
+5. Start the development server
+   ```bash
+   npm run dev
+   ```
+

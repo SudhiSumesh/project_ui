@@ -1,38 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
+  AutoComplete,
   Button,
   ConfigProvider,
   Descriptions,
-  Input,
   Modal,
-  Table,
 } from "antd";
-import "./style.css";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getClaimsDiagnosis,
   editClaimsDiagnosis,
+  icdSearch,
 } from "../../../../../Redux/Diagnosis/diagnosis.actions";
-import toast, { Toaster } from "react-hot-toast";
-function Diagnosis() {
+import toast from "react-hot-toast";
+import debounce from "lodash.debounce";
+import "./style.css";
+
+const Diagnosis = () => {
+  const clinicId = localStorage.getItem("clinic_id");
   const dispatch = useDispatch();
-  const { diagnosisData, editDiagnosisRes } = useSelector(
+  const { diagnosisData, editDiagnosisRes, icdSearchData } = useSelector(
     (state) => state.diagnosis
   );
+
   // State to manage input values
   const [inputValues, setInputValues] = useState([]);
   const [openAdd, setOpenAdd] = useState(false);
+  const [searchInputs, setSearchInputs] = useState({});
 
-  //Effect for fetch diagnosis
+  // Effect to fetch diagnosis data
   useEffect(() => {
-    dispatch(
-      getClaimsDiagnosis(
-        JSON.parse(localStorage.getItem("selectedClaimRecord"))?.visitId || null
-      )
+    const selectedClaimRecord = JSON.parse(
+      localStorage.getItem("selectedClaimRecord")
     );
-  }, []);
-  //Initialize input values when diagnosisData changes
+    dispatch(getClaimsDiagnosis(selectedClaimRecord?.visitId || null));
+  }, [dispatch]);
+
+  // Initialize input values when diagnosisData changes
   useEffect(() => {
     if (diagnosisData?.visitDiagnosisDtoList) {
       setInputValues(
@@ -50,23 +55,19 @@ function Diagnosis() {
       );
     }
   }, [diagnosisData]);
+
+  // Effect to handle editDiagnosisRes changes
   useEffect(() => {
     if (editDiagnosisRes && editDiagnosisRes.responseCode === 0) {
-      toast.success("Updated successfully");
-        dispatch(
-          getClaimsDiagnosis(
-            JSON.parse(localStorage.getItem("selectedClaimRecord"))?.visitId ||
-              null
-          )
-        );
+      const selectedClaimRecord = JSON.parse(
+        localStorage.getItem("selectedClaimRecord")
+      );
+      dispatch(getClaimsDiagnosis(selectedClaimRecord?.visitId || null));
     }
-  }, [editDiagnosisRes]);
-  const handleOpenAdd = () => {
-    setOpenAdd(true);
-  };
-  const closeAdd = () => {
-    setOpenAdd(false);
-  };
+  }, [editDiagnosisRes, dispatch]);
+
+  const handleOpenAdd = () => setOpenAdd(true);
+  const closeAdd = () => setOpenAdd(false);
 
   const handleInputChange = (index, field, value) => {
     const updatedValues = [...inputValues];
@@ -74,9 +75,36 @@ function Diagnosis() {
     setInputValues(updatedValues);
   };
 
+  const handleSearchInputChange = (index, field, value) => {
+    const updatedSearchInputs = {
+      ...searchInputs,
+      [index]: { ...searchInputs[index], [field]: value },
+    };
+    setSearchInputs(updatedSearchInputs);
+  };
+
+  // Debounce the ICD search function to improve performance
+  const debounceSearch = useCallback(
+    debounce((searchTerm) => {
+      dispatch(icdSearch({ clinicId, search: searchTerm }));
+    }, 300),
+    [dispatch, clinicId]
+  );
+
+  const handleSearch = (index, field, value) => {
+    handleSearchInputChange(index, field, value);
+    if (value.length >= 3) {
+      debounceSearch(value);
+    }
+  };
+
+  const handleSelect = (index, field, value) => {
+    handleInputChange(index, field, value);
+    handleSearchInputChange(index, field, value);
+  };
+
   const handleSave = () => {
-    // Add your save logic here
-    inputValues.map((item) =>
+    inputValues.forEach((item) => {
       dispatch(
         editClaimsDiagnosis({
           icdCodeOne: item.dx1,
@@ -89,16 +117,19 @@ function Diagnosis() {
           icdCodeEight: item.dx8,
           diagnosisId: item.diagnosisId,
         })
-      )
-    );
+      ).then(() => {
+        closeAdd()
+        toast.success("Updated successfully");
+      });
+    });
   };
 
   return (
     <div>
       <Modal
         open={openAdd}
-        onOk={() => closeAdd()}
-        onCancel={() => closeAdd()}
+        onOk={closeAdd}
+        onCancel={closeAdd}
         closable={false}
         width={700}
         footer={null}
@@ -111,7 +142,6 @@ function Diagnosis() {
                 defaultColor: "white",
                 defaultBg: "#109590",
                 defaultGhostColor: "#109590",
-                defaultGhostBorderColor: "",
               },
               Table: {
                 headerBg: "#E0F0F2",
@@ -123,68 +153,54 @@ function Diagnosis() {
             <div className="diagnosis-modal-header">
               <div className="heading-text">Diagnosis</div>
               <div className="modal-btns">
-                <Button size="" ghost onClick={() => closeAdd()}>
+                <Button ghost onClick={closeAdd}>
                   Cancel
                 </Button>
-                <Button size="" onClick={handleSave}>
-                  Save
-                </Button>
+                <Button onClick={handleSave}>Save</Button>
               </div>
             </div>
             <div className="diagnosis-modal-controls">
-              {inputValues?.map((item, index) => (
+              {inputValues.map((item, index) => (
                 <div className="d-modal-controll" key={index}>
-                  <div className="diagnosis-edit-container">
-                    <input
-                      className="diagnosis-edit-input"
-                      placeholder="DX1"
-                      value={item.dx1}
-                      onChange={(e) =>
-                        handleInputChange(index, "dx1", e.target.value)
-                      }
-                    />
-                    {<PlusOutlined style={{ color: "#139696" }} />}
-                  </div>
-
-                  <div className="diagnosis-edit-container">
-                    <input
-                      className="diagnosis-edit-input"
-                      placeholder="DX2"
-                      value={item.dx2}
-                      onChange={(e) =>
-                        handleInputChange(index, "dx2", e.target.value)
-                      }
-                    />
-                    {<PlusOutlined style={{ color: "#139696" }} />}
-                  </div>
-                  <div className="diagnosis-edit-container">
-                    <input
-                      className="diagnosis-edit-input"
-                      placeholder="DX3"
-                      value={item.dx3}
-                      onChange={(e) =>
-                        handleInputChange(index, "dx3", e.target.value)
-                      }
-                    />
-                    {<PlusOutlined style={{ color: "#139696" }} />}
-                  </div>
-                  <div className="diagnosis-edit-container">
-                    <input
-                      className="diagnosis-edit-input"
-                      placeholder="DX4"
-                      value={item.dx4}
-                      onChange={(e) =>
-                        handleInputChange(index, "dx4", e.target.value)
-                      }
-                    />
-                    {<PlusOutlined style={{ color: "#139696" }} />}
-                  </div>
+                  {["dx1", "dx2", "dx3", "dx4"].map((dx) => (
+                    <div
+                      className="diagnosis-edit-container"
+                      key={`${dx}-${index}`}
+                    >
+                      <AutoComplete
+                        options={icdSearchData?.data?.map((icd) => ({
+                          key: icd.icdCode, // Ensure unique keys for AutoComplete options
+                          value: icd.icdCode,
+                          label: icd.icdCode,
+                        }))}
+                        onSelect={(value) => handleSelect(index, dx, value)}
+                        onSearch={(value) => handleSearch(index, dx, value)}
+                        value={searchInputs[index]?.[dx] || item[dx]}
+                        notFoundContent={
+                          searchInputs[index]?.[dx] &&
+                          !icdSearchData?.data?.length
+                            ? "No results found"
+                            : null
+                        }
+                      >
+                        <input
+                          className="diagnosis-edit-input"
+                          placeholder={dx.toUpperCase()}
+                          value={searchInputs[index]?.[dx] || item[dx]}
+                          onChange={(e) =>
+                            handleSearch(index, dx, e.target.value)
+                          }
+                        />
+                      </AutoComplete>
+                      <PlusOutlined style={{ color: "#139696" }} />
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
             <div className="container-btn">
-              <Button shape="" ghost icon={<SearchOutlined />} />
-              <Button shape="" ghost icon={<PlusOutlined />} />
+              <Button ghost icon={<SearchOutlined />} />
+              <Button ghost icon={<PlusOutlined />} />
             </div>
           </div>
         </ConfigProvider>
@@ -238,14 +254,12 @@ function Diagnosis() {
                 <div>{` DX1 :  ${item.dx1.icdCode}`}</div>
                 <div>{`DX2 : ${item.dx2.icdCode}`}</div>
                 <div>{`DX3 : ${item.dx3.icdCode}`}</div>
-                {/* {`DX1: ${item.dx1.icdCode}, DX2: ${item.dx2.icdCode}, DX3: ${item.dx3.icdCode}`} */}
               </div>
             </div>
           ))}
         </div>
       </div>
-      {/* <Toaster/> */}
     </div>
   );
-}
+};
 export default Diagnosis;

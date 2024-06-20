@@ -11,16 +11,16 @@ import validationSchema from "../../Helpers/ValidationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { clickLogin } from "../../Redux/Login/login.actions";
 import { LoginResponse } from "../../Redux/Login/login.reducer";
-import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import "./style.css";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [status, setstatus] = useState("default");
   const { loginResponse } = useSelector((state) => state.login);
 
-  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       clinic_name: "",
@@ -47,7 +47,7 @@ const LoginForm = () => {
     formik.resetForm();
     setstatus("not");
   };
-  //login response
+  //Login response
   useEffect(() => {
     if (loginResponse && loginResponse.data) {
       const { data } = loginResponse;
