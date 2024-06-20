@@ -421,3 +421,96 @@ export const payerList = [
     payerId: 960,
   },
 ];
+
+
+
+export const parties = [
+  {
+    name: "Primary",
+    value: 1,
+  },
+  {
+    name: "Secondary",
+    value: 2,
+  },
+  {
+    name: "Tertiary",
+    value: 3,
+  },
+  {
+    name: "Patient",
+    value: 4,
+  },
+  {
+    name: "None",
+    value: 5,
+  },
+];
+
+(1),
+  (2),
+  (3),
+  (4),
+  (5),
+  (6),
+  (7),
+  (8),
+  (9),
+  (10),
+  (11),
+  (12),
+  (13);
+  export const types = [
+    {
+      name: "Billed",
+      value: 1,
+    },
+    {
+      name: "Allowed",
+      value: 2,
+    },
+    {
+      name: "ContAdj",
+      value: 3,
+    },
+    {
+      name: "OtherAdj",
+      value: 4,
+    },
+    {
+      name: "Paid",
+      value: 5,
+    },
+    {
+      name: "OverPaid",
+      value: 6,
+    },
+    {
+      name: "ProAdj",
+      value: 7,
+    },
+    {
+      name: "Copay",
+      value: 8,
+    },
+    {
+      name: "CoIns",
+      value: 9,
+    },
+    {
+      name: "Ded",
+      value: 10,
+    },
+    {
+      name: "Other",
+      value: 11,
+    },
+    {
+      name: "WriteOff",
+      value: 12,
+    },
+    {
+      name: "BilledCorrection",
+      value: 13,
+    },
+  ];
