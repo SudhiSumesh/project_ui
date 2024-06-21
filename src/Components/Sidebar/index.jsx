@@ -120,6 +120,7 @@ const SideBar = () => {
                 claimStatus={
                   item.claimStatus ? statuses[item.claimStatus - 1].name : ""
                 }
+                facilityName={item.facilityName}
                 dos={formatDate(item.sdos)}
                 onClick={() => handleSidebarItemClick(item)}
                 isSelected={

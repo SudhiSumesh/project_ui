@@ -5,10 +5,6 @@ import Charges from "./Charges";
 import Payments from "./Payments";
 import Charts from "./Charts";
 
-const onChange = (key) => {
-  console.log(key);
-};
-
 const items = [
   {
     key: "1",
@@ -61,6 +57,6 @@ const items = [
 ];
 
 const MiddleScreenTabs = () => {
-  return <Tabs size="small" onChange={onChange} type="card" items={items} />;
+  return <Tabs size="small" type="card" items={items} />;
 };
 export default MiddleScreenTabs;

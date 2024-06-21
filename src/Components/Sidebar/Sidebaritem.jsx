@@ -6,9 +6,15 @@ function sidebarContent({
   claimStatus,
   onClick,
   isSelected,
+  facilityName,
 }) {
   const handleClick = () => {
     onClick(); // Invoke parent component's onClick handler
+  };
+  //trim text
+  const truncateText = (text, length) => {
+    if (text?.length <= length) return text;
+    return text?.slice(0, length) + "...";
   };
   return (
     <>
@@ -66,7 +72,7 @@ function sidebarContent({
               }}
             >
               <span>{claimStatus || ""}</span>
-              <span>BCBS OF TX</span>
+              <span>{truncateText(facilityName?facilityName:"",8) || ""}</span>
             </div>
           </div>
         </div>

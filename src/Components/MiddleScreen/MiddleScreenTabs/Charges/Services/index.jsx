@@ -128,7 +128,9 @@ function Services() {
     newData.splice(index, 1);
     setEditTableData(newData);
     if (procedureId) {
-      dispatch(deleteCharges(procedureId));
+      dispatch(deleteCharges(procedureId)).then(()=>{
+        toast.success("deleted successfully")
+      });
       dispatch(
         getClaimsCharges(
           JSON.parse(localStorage.getItem("selectedClaimRecord")).claimId
@@ -450,9 +452,6 @@ function Services() {
               Table: {
                 headerBg: "#E0F0F2",
               },
-              Input: {
-                colorBgBase: "red",
-              },
             },
           }}
         >
@@ -482,7 +481,7 @@ function Services() {
         className=""
         style={{
           border: "1px solid #D7E0E9",
-          borderRadius: "10px",
+          // borderRadius: "10px",
           backgroundColor: "#ffff",
         }}
       >
@@ -511,7 +510,7 @@ function Services() {
           </Button>
         </div>
         <Table
-          className="custom-table"
+          className="custom-table-payment"
           columns={columns}
           dataSource={visitServiceData}
           pagination={false}

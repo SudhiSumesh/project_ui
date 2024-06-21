@@ -5,6 +5,7 @@ import { Button, DatePicker, Input, Select } from "antd";
 import { editClaim } from "../../Redux/Claim/claim.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../Helpers/dateFormater";
+import { clearClaimEditResponse } from "../../Redux/Claim/claim.reducer";
 import {
   providerList,
   serviceList,
@@ -14,7 +15,7 @@ import {
 } from "../../Helpers/enums";
 import "./style.css";
 
-function ClaimEditForm({ closeAdd, selectedRecord }) {
+function ClaimEditForm({ closeAdd, selectedRecord,fetchData }) {
   const dispatch = useDispatch();
   const { claimUpdateResponse } = useSelector((state) => state.claim);
   // Mapping enums to options for Select components
@@ -80,8 +81,10 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
       claimUpdateResponse.responseCode === 0 &&
       claimUpdateResponse.data
     ) {
-    //   console.log(claimUpdateResponse);
+      //   console.log(claimUpdateResponse);
       toast.success("Claim updated successfully");
+      dispatch(clearClaimEditResponse(null));
+      fetchData()
     }
   }, [claimUpdateResponse]);
   return (
@@ -108,22 +111,25 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
       </div>
       <div className="modal-grid">
         <div className="input-container">
-          <Select
+          <label htmlFor="patientName" className="input-label">
+            Patient Name
+          </label>
+          <Input
             placeholder="Patient Name"
             size="large"
             className="modal-grid-buttons"
-            options={[{ label: "Amal", value: 1 }]}
+            // options={[{ label: "Amal", value: 1 }]}
             name="patientName"
             value={formik.values.patientName}
-            onChange={(value, option) => {
-              formik.setFieldValue("patientId", value);
-              formik.setFieldValue("patientName", option.label);
-            }}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
         </div>
 
         <div className="input-container">
+          <label htmlFor="mrn" className="input-label">
+            MRN
+          </label>
           <Input
             name="mrn"
             placeholder="MRN"
@@ -136,6 +142,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
         </div>
 
         <div className="input-container">
+          <label htmlFor="ProviderName" className="input-label">
+            Provider Name
+          </label>
           <Select
             placeholder="Provider Name"
             size="large"
@@ -152,6 +161,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
         </div>
 
         <div className="input-container">
+          <label htmlFor="dos" className="input-label">
+            DOS
+          </label>
           <DatePicker
             placeholder="DOS"
             size="large"
@@ -162,21 +174,24 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
             // value={formik.values.dos}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.dos && formik.errors.dos ? (
+          {/* {formik.touched.dos && formik.errors.dos ? (
             <div className="error">{formik.errors.dos}</div>
-          ) : null}
+          ) : null} */}
         </div>
 
         <div className="input-container">
+          <label htmlFor="PayorName" className="input-label">
+            Payor Name
+          </label>
           <Select
             placeholder="Payor Name"
             size="large"
             className="modal-grid-buttons"
             options={payers}
             name="primaryPayerId"
-            value={formik.values.primaryPayerId}
+            value={formik.values.primaryPayerName}
             onChange={(value, option) => {
-              formik.setFieldValue("primaryPayerId", value);
+              formik.setFieldValue("primaryPayerId", option.value);
               formik.setFieldValue("primaryPayerName", option.label);
             }}
             onBlur={formik.handleBlur}
@@ -184,15 +199,18 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
         </div>
 
         <div className="input-container">
+          <label htmlFor="FacilityName" className="input-label">
+            Facility Name
+          </label>
           <Select
             placeholder="Facility Name"
             size="large"
             className="modal-grid-buttons"
             options={facilities}
             name="facilityId"
-            value={formik.values.facilityId}
+            value={formik.values.facilityName}
             onChange={(value, option) => {
-              formik.setFieldValue("facilityId", value);
+              formik.setFieldValue("facilityId", option.value);
               formik.setFieldValue("facilityName", option.label);
             }}
             onBlur={formik.handleBlur}
@@ -200,6 +218,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
         </div>
 
         <div className="input-container">
+          <label htmlFor="apptType" className="input-label">
+            Service
+          </label>
           <Select
             placeholder="Service"
             size="large"
@@ -216,6 +237,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
         </div>
 
         <div className="input-container">
+          <label htmlFor="billed" className="input-label">
+            Charges
+          </label>
           <Input
             name="billed"
             placeholder="Charges"
@@ -227,6 +251,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
           />
         </div>
         <div className="input-container">
+          <label htmlFor="primaryPending" className="input-label">
+            Ins Bal
+          </label>
           <Input
             name="primaryPending"
             placeholder="Ins Bal"
@@ -238,6 +265,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
           />
         </div>
         <div className="input-container">
+          <label htmlFor="patientPending" className="input-label">
+            Patient Balance
+          </label>
           <Input
             name="patientPending"
             placeholder="Pat Bal"
@@ -249,6 +279,9 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
           />
         </div>
         <div className="input-container">
+          <label htmlFor="status" className="input-label">
+            Claim Status
+          </label>
           <Select
             placeholder="Claim Status"
             size="large"
@@ -263,8 +296,6 @@ function ClaimEditForm({ closeAdd, selectedRecord }) {
             onBlur={formik.handleBlur}
           />
         </div>
-
-
       </div>
     </form>
   );

@@ -1,5 +1,4 @@
-
-.add-claim-form{
+.add-claim-form {
   display: "flex";
   gap: "18px";
   padding-top: "16px";
@@ -28,7 +27,6 @@
   /* font-family: Inter; */
   font-size: 18px;
   font-weight: 200;
-  
 }
 .custom-datepicker .ant-picker-input input::placeholder {
   color: silver;
@@ -36,8 +34,18 @@
   font-size: 18px;
   font-weight: 200;
 }
-.input-container{
+
+.input-container {
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  background-color: white;
+  padding: 0 5px;
+  font-size: 14px;
+  color: rgba(136, 133, 133, 0.651); 
 }
 .modal-grid-buttons {
   width: 100%;
@@ -45,8 +53,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   /* color: black; */
- 
-
 }
 
 .error {
@@ -54,4 +60,3 @@
   font-size: 12px;
   /* margin-top: 4px; */
 }
-

@@ -57,11 +57,13 @@ const ClaimsDetail = () => {
                               localStorage.getItem("selectedClaimRecord")
                             )?.patientName
                           }
-                          {
-                            JSON.parse(
-                              localStorage.getItem("selectedClaimRecord")
-                            )?.dos
-                          }
+                          <span style={{marginInlineStart:'8px '}}>
+                            {
+                              JSON.parse(
+                                localStorage.getItem("selectedClaimRecord")
+                              )?.dos
+                            }
+                          </span>
                         </p>
                       ),
                     },
@@ -78,7 +80,8 @@ const ClaimsDetail = () => {
                             JSON.parse(
                               localStorage.getItem("selectedClaimRecord")
                             )?.payments
-                          }.00
+                          }
+                          .00
                         </p>
                       ),
                     },

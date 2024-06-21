@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import ClaimEditForm from "../ClaimEditForm";
 import "./style.css";
 import { formatDate, lastYear } from "../../Helpers/dateFormater";
+import { clearClaimDeleteResponse } from "../../Redux/Claim/claim.reducer";
 
 const ClaimsTable = ({
   start,
@@ -42,7 +43,7 @@ const ClaimsTable = ({
   // Function to open the add modal
   const handleOpenAdd = (record) => {
     setOpenAdd(true);
-    console.log(record);
+    // console.log(record);
     setSelectedRecord(record);
   };
   // Function to close the add modal
@@ -190,7 +191,7 @@ const ClaimsTable = ({
       ),
     },
   ];
-  // // const columns = selectedColumns.map((col) => columnDefinitions[col]);
+  // const columns = selectedColumns.map((col) => columnDefinitions[col]);
   // const columns = columnDefinitions.filter((col) =>
   //   selectedColumns.includes(col.title)
   // );
@@ -224,10 +225,10 @@ const ClaimsTable = ({
     dispatch,
     start,
     limit,
-    selectedProvider,
-    selectedServices,
-    selectedFacility,
-    selectedStatus,
+    // selectedProvider,
+    // selectedServices,
+    // selectedFacility,
+    // selectedStatus,
     searchQuery,
   ]);
   useEffect(() => {
@@ -274,6 +275,7 @@ const ClaimsTable = ({
       claimDeleteResponse.data
     ) {
       toast.success(claimDeleteResponse.data?.message);
+      dispatch(clearClaimDeleteResponse(null))
       fetchData(); // Call fetchData to refresh data after deletion
     }
   }, [claimDeleteResponse, fetchData]);
@@ -298,7 +300,7 @@ const ClaimsTable = ({
         closable={false}
         width={800}
       >
-        <ClaimEditForm closeAdd={closeAdd} selectedRecord={selectedRecord} />
+        <ClaimEditForm closeAdd={closeAdd} selectedRecord={selectedRecord} fetchData={fetchData}/>
       </Modal>
       <ConfigProvider
         theme={{
